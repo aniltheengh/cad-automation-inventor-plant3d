@@ -1,0 +1,27 @@
+' 06_Excel_Size_Table.iLogicVb  -  drive a part from a row in an Excel size table (GoExcel)
+' -----------------------------------------------------------------------------------------
+' Sizes.xlsx, sheet "Flanges", row 1 = headers:  Size | OD | ID | Thk | BCD | Holes | HoleDia
+' User param "Size" (text, multi-value) picks the row. Each other column -> same-named model/user parameter.
+' Embedding: you can also embed the workbook in the part (Manage > Link > Embed) and use "3rd Party:Embedding 1".
+Sub Main()
+    Dim xls As String = ThisDoc.Path & "\Sizes.xlsx"
+    Dim sheet As String = "Flanges"
+
+    ' Fill the multi-value list from column A once
+    MultiValue.List("Size") = GoExcel.CellValues(xls, sheet, "A2", "A200")
+
+    Dim row As Integer = GoExcel.FindRow(xls, sheet, "Size", "=", CStr(Parameter("Size")))
+    If row < 0 Then
+        MessageBox.Show("Size " & Parameter("Size") & " not found in " & xls) : Return
+    End If
+    Parameter("OD") = GoExcel.CurrentRowValue("OD")
+    Parameter("ID") = GoExcel.CurrentRowValue("ID")
+    Parameter("Thk") = GoExcel.CurrentRowValue("Thk")
+    Parameter("BCD") = GoExcel.CurrentRowValue("BCD")
+    Parameter("Holes") = GoExcel.CurrentRowValue("Holes")
+    Parameter("HoleDia") = GoExcel.CurrentRowValue("HoleDia")
+    GoExcel.Close()
+
+    iProperties.Value("Project", "Part Number") = "FLG-" & Parameter("Size")
+    iLogicVb.UpdateWhenDone = True
+End Sub

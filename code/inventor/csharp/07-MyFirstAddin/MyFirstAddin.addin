@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Registry-free add-in manifest. ClassId/ClientId MUST equal the [Guid] on StandardAddInServer. -->
+<Addin Type="Standard">
+  <ClassId>{2ECD787D-3623-49EC-8830-C0052D21C63A}</ClassId>
+  <ClientId>{2ECD787D-3623-49EC-8830-C0052D21C63A}</ClientId>
+  <DisplayName>My First Add-in (CAD Automation guide)</DisplayName>
+  <Description>Ribbon tab with Export PDF, Part Info and Parameter Editor commands.</Description>
+  <!-- relative path = same folder as this .addin file -->
+  <Assembly>MyFirstAddin.dll</Assembly>
+  <LoadOnStartUp>1</LoadOnStartUp>
+  <UserUnloadable>1</UserUnloadable>
+  <Hidden>0</Hidden>
+  <!-- 29 = Inventor 2025, 30 = 2026, 31 = 2027. "28.." means "newer than 2024" i.e. the .NET 8 releases -->
+  <SupportedSoftwareVersionGreaterThan>28..</SupportedSoftwareVersionGreaterThan>
+  <DataVersion>1</DataVersion>
+  <UserInterfaceVersion>1</UserInterfaceVersion>
+</Addin>

@@ -1,0 +1,73 @@
+' 03_Shaft_Generator.iLogicVb  -  run in a NEW, EMPTY part (metric template)
+' --------------------------------------------------------------------------
+' Builds a stepped shaft by sketching a half-profile on the XZ plane and revolving it about the X axis.
+' Shows raw Inventor API from iLogic: sketches, Point2d, profiles, RevolveFeatures, chamfers, units (cm!).
+' Edit the table: each row = (diameter mm, length mm), left to right.
+Sub Main()
+    Dim steps As New List(Of Double())
+    steps.Add(New Double() {30, 40})
+    steps.Add(New Double() {40, 25})
+    steps.Add(New Double() {50, 80})
+    steps.Add(New Double() {40, 25})
+    steps.Add(New Double() {30, 50})
+
+    Dim doc As PartDocument = TryCast(ThisDoc.Document, PartDocument)
+    If doc Is Nothing Then
+        MessageBox.Show("Run this in a part.") : Return
+    End If
+    Dim cd As PartComponentDefinition = doc.ComponentDefinition
+    If cd.Features.Count > 0 Then
+        If MessageBox.Show("Part already has features. Continue?", "Shaft", MessageBoxButtons.YesNo) <> DialogResult.Yes Then Return
+    End If
+    Dim tg As TransientGeometry = ThisApplication.TransientGeometry
+    Const MM As Double = 0.1                       ' API = cm
+
+    ' XZ plane: sketch X = model X, sketch Y = model -Z or Z depending on plane normal; only radius matters.
+    Dim sk As PlanarSketch = cd.Sketches.Add(cd.WorkPlanes.Item(2))
+    sk.Name = "ShaftProfile"
+    Dim pts As New List(Of Point2d)
+    Dim x As Double = 0
+    pts.Add(tg.CreatePoint2d(0, 0))
+    For Each s In steps
+        Dim r As Double = s(0) / 2
+        pts.Add(tg.CreatePoint2d(x * MM, r * MM))
+        x += s(1)
+        pts.Add(tg.CreatePoint2d(x * MM, r * MM))
+    Next
+    pts.Add(tg.CreatePoint2d(x * MM, 0))
+
+    ' closed polyline: connect consecutive points, reuse SketchPoints so the loop is closed
+    Dim firstLine As SketchLine = Nothing, prev As SketchLine = Nothing
+    For i As Integer = 0 To pts.Count - 2
+        Dim ln As SketchLine
+        If prev Is Nothing Then
+            ln = sk.SketchLines.AddByTwoPoints(pts(i), pts(i + 1))
+            firstLine = ln
+        Else
+            ln = sk.SketchLines.AddByTwoPoints(prev.EndSketchPoint, pts(i + 1))
+        End If
+        prev = ln
+    Next
+    Dim axisLine As SketchLine = sk.SketchLines.AddByTwoPoints(prev.EndSketchPoint, firstLine.StartSketchPoint)  ' on the axis
+
+    Dim prof As Profile = sk.Profiles.AddForSolid()
+    Dim rev As RevolveFeature = cd.Features.RevolveFeatures.AddFull(prof, axisLine, PartFeatureOperationEnum.kNewBodyOperation)
+    rev.Name = "Shaft"
+
+    ' 1 mm chamfer on the two end circular edges (edges at x = 0 and x = total length)
+    Dim edges As EdgeCollection = ThisApplication.TransientObjects.CreateEdgeCollection()
+    For Each f As Face In rev.Faces
+        If f.SurfaceType = SurfaceTypeEnum.kPlaneSurface Then
+            Dim pt As Point = f.PointOnFace
+            If Math.Abs(pt.X) < 0.0001 OrElse Math.Abs(pt.X - x * MM) < 0.0001 Then
+                For Each e As Edge In f.Edges
+                    edges.Add(e)
+                Next
+            End If
+        End If
+    Next
+    If edges.Count > 0 Then cd.Features.ChamferFeatures.AddUsingDistance(edges, "1 mm")
+
+    iProperties.Value("Project", "Description") = "SHAFT " & steps.Count & " steps, L=" & x & " mm"
+    ThisApplication.ActiveView.Fit()
+End Sub

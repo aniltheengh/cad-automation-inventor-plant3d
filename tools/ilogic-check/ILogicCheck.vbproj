@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Compile-check harness for iLogic rules (NOT a runtime). tools/check_ilogic.py wraps every
+    code/inventor/ilogic/*.iLogicVb into a class that inherits RuleBase (hand-written stubs of the
+    iLogic objects: Parameter, iProperties, ThisDoc, iLogicVb, MultiValue, GoExcel, Feature, Component, Logger).
+    The Inventor API part IS checked for real against Autodesk.Inventor.Interop.dll.
+  -->
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <OptionStrict Condition="'$(OptionStrict)'==''">Off</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <OptionExplicit>On</OptionExplicit>
+    <RootNamespace></RootNamespace>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <NoWarn>$(NoWarn);BC42020;BC42021;BC42024;BC42104;BC42105;BC42353;BC42354;BC42355;BC40000</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autodesk.Inventor.Interop">
+      <HintPath>$(InventorBin)\Autodesk.Inventor.Interop.dll</HintPath>
+    </Reference>
+    <Import Include="System" /><Import Include="System.Math" /><Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" /><Import Include="Microsoft.VisualBasic" />
+    <Import Include="Inventor" /><Import Include="System.Windows.Forms" /><Import Include="System.Linq" />
+  </ItemGroup>
+</Project>

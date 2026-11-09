@@ -1,0 +1,51 @@
+' 01_SpurGear_Params.iLogicVb  -  internal rule in a "gear template" part
+' -------------------------------------------------------------------------
+' Template part must have USER parameters:  m (mm), z (ul), alpha (deg), b (mm), x (ul, profile shift)
+' and these REFERENCE/derived parameters the sketch uses:  d_p, d_a, d_f, d_b  (mm)
+' Put a closed-form involute approximation in the sketch OR use this rule as the "brain"
+' that validates input and computes everything the sketch/feature needs.
+' Trigger: Manage > Event Triggers > "Any Model Parameter Change" (or just run on demand).
+' All parameter values read with Parameter("name") come back in DOCUMENT units (mm, deg) - unlike the raw API (cm, rad).
+Sub Main()
+    Dim m As Double = Parameter("m")
+    Dim z As Integer = CInt(Parameter("z"))
+    Dim alphaDeg As Double = Parameter("alpha")
+    Dim x As Double = Parameter("x")
+
+    ' --- validation -------------------------------------------------------
+    Dim standardModules() As Double = {1, 1.25, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10, 12, 16, 20}   ' ISO 54 series I
+    If Array.IndexOf(standardModules, m) < 0 Then
+        Logger.Warn("Module " & m & " is not ISO 54 series I - allowed, but check tooling.")
+    End If
+    Dim alpha As Double = alphaDeg * Math.PI / 180
+    Dim zMin As Double = 2 / Math.Sin(alpha) ^ 2                 ' 17.1 for 20 deg
+    If z < zMin AndAlso x < (zMin - z) / zMin Then
+        MessageBox.Show("z = " & z & " undercuts (z_min = " & Format(zMin, "0.0") & ")." & vbCrLf &
+                        "Use profile shift x >= " & Format((zMin - z) / zMin, "0.000"), "Gear check")
+    End If
+
+    ' --- geometry ---------------------------------------------------------
+    Dim dp As Double = m * z
+    Parameter("d_p") = dp
+    Parameter("d_a") = dp + 2 * m * (1 + x)
+    Parameter("d_f") = dp - 2 * m * (1.25 - x)
+    Parameter("d_b") = dp * Math.Cos(alpha)
+
+    ' tip thickness check (pointed teeth)
+    Dim ra As Double = Parameter("d_a") / 2, rb As Double = Parameter("d_b") / 2
+    Dim aa As Double = Math.Acos(rb / ra)
+    Dim psi As Double = Math.PI / (2 * z) + 2 * x * Math.Tan(alpha) / z
+    Dim sa As Double = 2 * ra * (psi + Inv(alpha) - Inv(aa))
+    If sa < 0.25 * m Then Logger.Warn("Tip thickness " & Format(sa, "0.00") & " mm < 0.25 m - teeth nearly pointed")
+
+    ' --- iProperties --------------------------------------------------------
+    iProperties.Value("Project", "Part Number") = "GEAR-M" & m & "-Z" & z
+    iProperties.Value("Project", "Description") = "SPUR GEAR m" & m & " z" & z & " a" & alphaDeg & " b" & Parameter("b")
+    iProperties.Value("Custom", "PitchDia") = Format(dp, "0.000")
+
+    iLogicVb.UpdateWhenDone = True
+End Sub
+
+Function Inv(a As Double) As Double
+    Return Math.Tan(a) - a
+End Function

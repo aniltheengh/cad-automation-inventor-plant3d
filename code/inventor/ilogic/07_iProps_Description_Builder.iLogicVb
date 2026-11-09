@@ -1,0 +1,33 @@
+' 07_iProps_Description_Builder.iLogicVb  -  EXTERNAL rule, trigger "Before Save Document"
+' ----------------------------------------------------------------------------------------
+' Builds a consistent Description and fills Part Number from the file name if empty.
+' Plate parts : "PL 10 x 200 x 350, SS400"   (from the sheet-metal / extents)
+' Others      : keeps the user's description but appends the material.
+Sub Main()
+    Dim doc As Document = ThisDoc.Document
+    If doc.DocumentType <> DocumentTypeEnum.kPartDocumentObject Then Return
+    Dim part As PartDocument = CType(doc, PartDocument)
+
+    If CStr(iProperties.Value("Project", "Part Number")) = "" Then
+        iProperties.Value("Project", "Part Number") = ThisDoc.FileName(False)   ' without extension
+    End If
+
+    Dim mat As String = iProperties.Material
+    If TypeOf part.ComponentDefinition Is SheetMetalComponentDefinition Then
+        Dim smcd As SheetMetalComponentDefinition = CType(part.ComponentDefinition, SheetMetalComponentDefinition)
+        If Not smcd.HasFlatPattern Then
+            smcd.Unfold()
+            smcd.FlatPattern.ExitEdit()
+        End If
+        Dim uom As UnitsOfMeasure = doc.UnitsOfMeasure
+        Dim fp As FlatPattern = smcd.FlatPattern
+        Dim l As Double = uom.ConvertUnits(fp.Length, UnitsTypeEnum.kDatabaseLengthUnits, UnitsTypeEnum.kMillimeterLengthUnits)
+        Dim w As Double = uom.ConvertUnits(fp.Width, UnitsTypeEnum.kDatabaseLengthUnits, UnitsTypeEnum.kMillimeterLengthUnits)
+        Dim t As Double = uom.ConvertUnits(CDbl(smcd.Thickness.Value), UnitsTypeEnum.kDatabaseLengthUnits, UnitsTypeEnum.kMillimeterLengthUnits)
+        iProperties.Value("Project", "Description") = "PL " & Format(t, "0.#") & " x " & Format(Math.Min(l, w), "0") & " x " & Format(Math.Max(l, w), "0") & ", " & mat
+    Else
+        Dim d As String = CStr(iProperties.Value("Project", "Description"))
+        If d <> "" AndAlso Not d.EndsWith(mat) Then iProperties.Value("Project", "Description") = d & ", " & mat
+    End If
+    iProperties.Value("Custom", "Mass_kg") = Format(iProperties.Mass, "0.00")
+End Sub

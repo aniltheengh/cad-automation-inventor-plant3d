@@ -1,0 +1,24 @@
+<Project>
+  <!-- AutoCAD / Plant 3D 2025-2026 plug-ins: .NET 8, x64. AutoCAD 2026.1.2+ runs on .NET 10 but loads net8 DLLs. -->
+  <!-- AcadRelease: 2026 (default, .NET 8, NuGet 25.1.0) or 2027 (.NET 10, NuGet 26.0.0, needs the .NET 10 SDK).
+       A Plant 3D TRIAL downloaded today is usually the newest release (2027) -> build with:
+         dotnet build -p:AcadRelease=2027                                                     -->
+  <PropertyGroup>
+    <AcadRelease Condition="'$(AcadRelease)'==''">2026</AcadRelease>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(AcadRelease)'=='2027'">
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <AcadNuGetVersion Condition="'$(AcadNuGetVersion)'==''">26.0.0</AcadNuGetVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework Condition="'$(TargetFramework)'==''">net8.0-windows</TargetFramework>
+    <PlatformTarget>x64</PlatformTarget>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <!-- NuGet "AutoCAD.NET(.Core)" by Autodesk: 25.0.x = AutoCAD 2025, 25.1.0 = 2026 (net8.0),
+         25.1.1 = 2026.1.2+ (net10.0 only), 26.0.0 = 2027 (net10.0). Keep 25.1.0 to load in 2025.x AND 2026.x. -->
+    <AcadNuGetVersion Condition="'$(AcadNuGetVersion)'==''">25.1.0</AcadNuGetVersion>
+  </PropertyGroup>
+</Project>

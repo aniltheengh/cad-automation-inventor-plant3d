@@ -1,0 +1,8 @@
+<Addin Type="Plugin">
+  <!-- Type="Plugin" = Inventor Server / Design Automation add-in (no UI) -->
+  <ClassId>{BFB706D2-9685-44D5-9D58-50CB749B40DC}</ClassId>
+  <ClientId>{BFB706D2-9685-44D5-9D58-50CB749B40DC}</ClientId>
+  <DisplayName>GearDAPlugin</DisplayName>
+  <Description>Creates a spur gear blank from params.json on Design Automation for Inventor</Description>
+  <Assembly>GearDAPlugin.dll</Assembly>
+</Addin>

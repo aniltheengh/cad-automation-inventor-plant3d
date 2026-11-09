@@ -1,0 +1,29 @@
+' 10_Event_Rules_Examples.iLogicVb  -  small rules meant for Event Triggers (Manage > Event Triggers)
+' Each Sub is a separate rule in practice; here they are together for reading. Main() runs all checks.
+Sub Main()
+    CheckMaterialAssigned()
+    CheckPartNumberMatchesFile()
+    StampSaveInfo()
+End Sub
+
+' Trigger: Before Save Document
+Sub CheckMaterialAssigned()
+    If ThisDoc.Document.DocumentType <> DocumentTypeEnum.kPartDocumentObject Then Return
+    Dim mat As String = iProperties.Material
+    If mat = "" OrElse mat.StartsWith("Generic") OrElse mat.StartsWith("汎用") Then
+        MessageBox.Show("Material is '" & mat & "'. Assign the real material before release.", "Check", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+    End If
+End Sub
+
+' Trigger: Before Save Document
+Sub CheckPartNumberMatchesFile()
+    Dim pn As String = CStr(iProperties.Value("Project", "Part Number"))
+    Dim fn As String = ThisDoc.FileName(False)
+    If pn <> fn Then Logger.Warn("Part Number '" & pn & "' differs from file name '" & fn & "'")
+End Sub
+
+' Trigger: Before Save Document  (NOT 'After Save': changing iProperties after saving makes the file dirty again)
+Sub StampSaveInfo()
+    iProperties.Value("Custom", "LastSavedBy") = System.Environment.UserName
+    iProperties.Value("Custom", "LastSavedOn") = DateTime.Now.ToString("yyyy-MM-dd HH:mm")
+End Sub

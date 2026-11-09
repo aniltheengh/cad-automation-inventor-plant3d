@@ -1,0 +1,12 @@
+bin/
+obj/
+.vs/
+*.user
+*.suo
+__pycache__/
+*.pyc
+out/
+_check/
+*.log
+~$*.xlsx
+tools/ilogic-check/_generated/

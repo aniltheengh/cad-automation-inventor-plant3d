@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Zip layout:  GearDAPlugin.bundle/PackageContents.xml
+                  GearDAPlugin.bundle/Contents/GearDAPlugin.dll + GearDAPlugin.Inventor.addin   -->
+<ApplicationPackage SchemaVersion="1.0" Version="1.0" ProductCode="{BFB706D2-9685-44D5-9D58-50CB749B40DC}" Name="GearDAPlugin"
+                    Description="Spur gear generator for Design Automation for Inventor" Author="aniltheengh">
+  <CompanyDetails Name="aniltheengh" Url="https://github.com/aniltheengh" Email="" />
+  <Components>
+    <RuntimeRequirements OS="Win64" Platform="Inventor" />
+    <ComponentEntry LoadOnAutoCADStartup="False" LoadOnCommandInvocation="False"
+                    AppDescription="Gear generator" AppName="GearDAPlugin"
+                    ModuleName="./Contents/GearDAPlugin.Inventor.addin" />
+  </Components>
+</ApplicationPackage>

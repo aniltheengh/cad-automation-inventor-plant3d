@@ -1,0 +1,54 @@
+' 08_Drawing_Auto_Create.iLogicVb  -  run from a PART or ASSEMBLY
+' -----------------------------------------------------------------
+' Creates a new drawing from the default template: front + top + right + iso views,
+' retrieves model dimensions into the front view, adds a parts list for assemblies,
+' and saves it next to the model with the same name.
+Sub Main()
+    Dim model As Document = ThisDoc.Document
+    If model.DocumentType <> DocumentTypeEnum.kPartDocumentObject AndAlso model.DocumentType <> DocumentTypeEnum.kAssemblyDocumentObject Then
+        MessageBox.Show("Run from a part or assembly.") : Return
+    End If
+    If model.FullFileName = "" Then MessageBox.Show("Save the model first.") : Return
+
+    Dim tpl As String = ThisApplication.FileManager.GetTemplateFile(DocumentTypeEnum.kDrawingDocumentObject)
+    Dim dwg As DrawingDocument = CType(ThisApplication.Documents.Add(DocumentTypeEnum.kDrawingDocumentObject, tpl, True), DrawingDocument)
+    Dim sh As Sheet = dwg.ActiveSheet
+    Dim tg As TransientGeometry = ThisApplication.TransientGeometry
+
+    ' scale so the model fits ~ 1/3 of the sheet width (sheet units = cm)
+    Dim box As Box = If(TypeOf model Is PartDocument, CType(model, PartDocument).ComponentDefinition.RangeBox, CType(model, AssemblyDocument).ComponentDefinition.RangeBox)
+    Dim size As Double = Math.Max(box.MaxPoint.X - box.MinPoint.X, Math.Max(box.MaxPoint.Y - box.MinPoint.Y, box.MaxPoint.Z - box.MinPoint.Z))
+    Dim scale As Double = NiceScale(sh.Width / 3.2 / size)
+
+    Dim front As DrawingView = sh.DrawingViews.AddBaseView(CType(model, _Document), tg.CreatePoint2d(sh.Width * 0.28, sh.Height * 0.62), scale,
+        ViewOrientationTypeEnum.kFrontViewOrientation, DrawingViewStyleEnum.kHiddenLineRemovedDrawingViewStyle)
+    sh.DrawingViews.AddProjectedView(front, tg.CreatePoint2d(sh.Width * 0.28, sh.Height * 0.25), DrawingViewStyleEnum.kFromBaseDrawingViewStyle)
+    sh.DrawingViews.AddProjectedView(front, tg.CreatePoint2d(sh.Width * 0.6, sh.Height * 0.62), DrawingViewStyleEnum.kFromBaseDrawingViewStyle)
+    Dim iso As DrawingView = sh.DrawingViews.AddProjectedView(front, tg.CreatePoint2d(sh.Width * 0.6, sh.Height * 0.28), DrawingViewStyleEnum.kShadedDrawingViewStyle)
+
+    ' bring in the model (sketch/feature) dimensions that are parallel to the front view
+    Try
+        sh.DrawingDimensions.GeneralDimensions.Retrieve(front)
+    Catch
+        Logger.Warn("No dimensions retrieved (model may have none parallel to this view).")
+    End Try
+
+    If model.DocumentType = DocumentTypeEnum.kAssemblyDocumentObject Then
+        sh.PartsLists.Add(front, tg.CreatePoint2d(sh.Width - 1, sh.Height - 1))   ' top-right corner of the list
+        ' balloons: see docs/09 (AutoBalloon via API is version-dependent - verify)
+    End If
+
+    Dim outFile As String = System.IO.Path.ChangeExtension(model.FullFileName, ".idw")
+    If System.IO.File.Exists(outFile) Then outFile = outFile.Replace(".idw", "_auto.idw")
+    dwg.SaveAs(outFile, False)
+    MessageBox.Show("Drawing created: " & outFile & vbCrLf & "Scale 1:" & Format(1 / scale, "0.##"), "Auto drawing")
+End Sub
+
+' snap to a standard scale (ISO 5455): 1:1, 1:2, 1:5, 1:10 ... or 2:1, 5:1
+Function NiceScale(raw As Double) As Double
+    Dim std() As Double = {10, 5, 2, 1, 0.5, 0.2, 0.1, 0.05, 0.02, 0.01}
+    For Each s As Double In std
+        If s <= raw Then Return s
+    Next
+    Return 0.01
+End Function

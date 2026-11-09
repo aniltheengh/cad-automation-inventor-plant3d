@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Design Automation (cloud Inventor) app bundle plugin. Inventor DA 2026 engine = .NET 8 only. -->
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <OutputType>Library</OutputType>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autodesk.Inventor.Interop">
+      <HintPath>$(InventorBin)\Autodesk.Inventor.Interop.dll</HintPath>
+      <EmbedInteropTypes>false</EmbedInteropTypes>
+      <Private>false</Private>
+    </Reference>
+    <Compile Include="..\..\csharp\02-SpurGearGenerator\GearMath.cs" Link="GearMath.cs" />
+    <None Update="GearDAPlugin.Inventor.addin" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

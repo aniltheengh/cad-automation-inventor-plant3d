@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    AutoCAD Plant 3D 2025/2026 plug-in (.NET 8). NETLOAD the DLL inside Plant 3D with a project open.
+    References: AutoCAD via Autodesk's NuGet package; Plant 3D via the SDK DLLs in $(PlantSdkInc).
+    Box/CI syntax check only:  dotnet build -p:PlantStubs=true  (uses tools/plant-sdk-stubs, never ship that)
+  -->
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Plant3DDataTools</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoCAD.NET" Version="$(AcadNuGetVersion)" ExcludeAssets="runtime" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(PlantStubs)'!='true'">
+    <!-- Copy Local = False for ALL of these: Plant 3D loads its own copies -->
+    <Reference Include="PnPProjectManagerMgd"><HintPath>$(PlantSdkInc)\PnPProjectManagerMgd.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="PnP3dProjectPartsMgd"><HintPath>$(PlantSdkInc)\PnP3dProjectPartsMgd.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="PnPDataLinks"><HintPath>$(PlantSdkInc)\PnPDataLinks.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="PnPDataObjects"><HintPath>$(PlantSdkInc)\PnPDataObjects.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(PlantStubs)'=='true'">
+    <ProjectReference Include="..\..\..\..\tools\plant-sdk-stubs\PlantSdkStubs.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,72 @@
+' 02_Tank_Configurator.iLogicVb  -  internal rule in a vertical tank / pressure vessel part (or assembly skeleton)
+' ---------------------------------------------------------------------------------------------------------------
+' User parameters expected:
+'   D_i  (mm)  inside diameter          L_ss (mm) shell straight length (seam to seam)
+'   P    (ul)  design pressure, MPa     S    (ul) allowable stress, MPa      E (ul) joint efficiency
+'   CA   (mm)  corrosion allowance      t_n  (mm) nominal plate (chosen)     HeadType (text, multi-value)
+'   N_Nozzles (ul)
+' Features expected (names in the browser):
+'   "Head_Ellipsoidal", "Head_Torispherical", "Head_Hemispherical"  (one active at a time)
+'   "Nozzle_Pattern" (circular pattern whose count = N_Nozzles)
+' Thickness formulas: ASME VIII-1 UG-27(c)(1) shell and UG-32 heads (inside-dimension forms).
+' See the companion repo "pressure-vessel-fea-inventor-nastran", doc 02, for the full hand calc.
+Sub Main()
+    MultiValue.SetList("HeadType", "2:1 Ellipsoidal", "Torispherical (F&D)", "Hemispherical")
+    Dim Pd As Double = Parameter("P")
+    Dim S As Double = Parameter("S")
+    Dim E As Double = Parameter("E")
+    Dim R As Double = Parameter("D_i") / 2
+    Dim D As Double = Parameter("D_i")
+    Dim CA As Double = Parameter("CA")
+
+    ' shell, circumferential stress (UG-27(c)(1)):  t = P R / (S E - 0.6 P)
+    Dim tShell As Double = Pd * R / (S * E - 0.6 * Pd) + CA
+    ' heads
+    Dim tHead As Double
+    Select Case CStr(Parameter("HeadType"))
+        Case "2:1 Ellipsoidal"          ' UG-32(d): t = P D / (2 S E - 0.2 P)
+            tHead = Pd * D / (2 * S * E - 0.2 * Pd) + CA
+            SetHead("Head_Ellipsoidal")
+        Case "Torispherical (F&D)"      ' UG-32(e), L = D, r = 0.06 L:  t = 0.885 P L / (S E - 0.1 P)
+            tHead = 0.885 * Pd * D / (S * E - 0.1 * Pd) + CA
+            SetHead("Head_Torispherical")
+        Case "Hemispherical"            ' UG-32(f): t = P L / (2 S E - 0.2 P), L = R
+            tHead = Pd * R / (2 * S * E - 0.2 * Pd) + CA
+            SetHead("Head_Hemispherical")
+    End Select
+
+    Dim tNom As Double = Parameter("t_n")
+    Dim msg As String = "Required shell t (incl. CA) = " & Format(tShell, "0.00") & " mm" & vbCrLf &
+                        "Required head  t (incl. CA) = " & Format(tHead, "0.00") & " mm (before forming thinning)" & vbCrLf &
+                        "Nominal plate t_n           = " & tNom & " mm"
+    If tNom < Math.Max(tShell, tHead) Then
+        MessageBox.Show(msg & vbCrLf & vbCrLf & "t_n is TOO THIN.", "Tank check", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+    Else
+        Logger.Info(msg)
+    End If
+
+    ' nozzles
+    Dim n As Integer = CInt(Parameter("N_Nozzles"))
+    Feature.IsActive("Nozzle_Pattern") = (n > 1)
+
+    ' capacity (shell + 2 heads), litres
+    Dim vShell As Double = Math.PI * R ^ 2 * Parameter("L_ss")
+    Dim vHead As Double
+    Select Case CStr(Parameter("HeadType"))
+        Case "2:1 Ellipsoidal" : vHead = Math.PI * D ^ 3 / 24
+        Case "Hemispherical" : vHead = Math.PI * D ^ 3 / 12
+        Case Else : vHead = 0.0809 * D ^ 3            ' ASME F&D approx (r = 0.06 D)
+    End Select
+    Dim litres As Double = (vShell + 2 * vHead) / 1000000.0
+    iProperties.Value("Custom", "Capacity_L") = Format(litres, "0")
+    iProperties.Value("Custom", "t_shell_req") = Format(tShell, "0.00")
+    iProperties.Value("Project", "Description") = "TANK ID" & D & " x " & Parameter("L_ss") & " SS, " & Parameter("HeadType") & ", " & Format(litres, "0") & " L"
+
+    iLogicVb.UpdateWhenDone = True
+End Sub
+
+Sub SetHead(active As String)
+    For Each f As String In New String() {"Head_Ellipsoidal", "Head_Torispherical", "Head_Hemispherical"}
+        Feature.IsActive(f) = (f = active)
+    Next
+End Sub

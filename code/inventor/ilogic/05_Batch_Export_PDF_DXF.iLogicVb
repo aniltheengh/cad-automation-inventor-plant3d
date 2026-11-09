@@ -1,0 +1,64 @@
+' 05_Batch_Export_PDF_DXF.iLogicVb  -  EXTERNAL rule (Manage > iLogic Browser > External Rules)
+' ----------------------------------------------------------------------------------------------
+' Run with a drawing open  -> exports that drawing to PDF (+DXF).
+' Run with no drawing open -> asks for a folder and exports every .idw in it.
+' Output goes to a "PDF" subfolder next to the drawings.
+Sub Main()
+    Dim doc As Document = ThisApplication.ActiveDocument
+    If doc IsNot Nothing AndAlso doc.DocumentType = DocumentTypeEnum.kDrawingDocumentObject Then
+        ExportOne(doc, True)
+        MessageBox.Show("Exported " & doc.DisplayName, "Export")
+        Return
+    End If
+
+    Dim folder As String = InputBox("Folder with .idw files:", "Batch export", "C:\Work\Drawings")
+    If folder = "" OrElse Not System.IO.Directory.Exists(folder) Then Return
+    Dim files() As String = System.IO.Directory.GetFiles(folder, "*.idw")
+    Dim ok As Integer = 0
+    ThisApplication.SilentOperation = True
+    Try
+        For Each f As String In files
+            Dim d As Document = ThisApplication.Documents.Open(f, False)
+            Try
+                ExportOne(d, False)
+                ok += 1
+            Catch ex As Exception
+                Logger.Error(f & ": " & ex.Message)
+            Finally
+                d.Close(True)
+            End Try
+        Next
+    Finally
+        ThisApplication.SilentOperation = False
+    End Try
+    MessageBox.Show(ok & " of " & files.Length & " exported.", "Batch export")
+End Sub
+
+Sub ExportOne(doc As Document, alsoDxf As Boolean)
+    Dim outDir As String = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(doc.FullFileName), "PDF")
+    System.IO.Directory.CreateDirectory(outDir)
+    Dim baseName As String = System.IO.Path.GetFileNameWithoutExtension(doc.FullFileName)
+    Dim rev As String = CStr(doc.PropertySets.Item("Inventor Summary Information").Item("Revision Number").Value)
+    If rev <> "" Then baseName &= "_Rev" & rev
+
+    Dim pdf As TranslatorAddIn = ThisApplication.ApplicationAddIns.ItemById("{0AC6FD96-2F4D-42CE-8BE0-8AEA580399E4}")
+    Dim ctx As TranslationContext = ThisApplication.TransientObjects.CreateTranslationContext()
+    ctx.Type = IOMechanismEnum.kFileBrowseIOMechanism
+    Dim opts As NameValueMap = ThisApplication.TransientObjects.CreateNameValueMap()
+    Dim dm As DataMedium = ThisApplication.TransientObjects.CreateDataMedium()
+    If pdf.HasSaveCopyAsOptions(doc, ctx, opts) Then
+        opts.Value("All_Color_AS_Black") = 0
+        opts.Value("Vector_Resolution") = 400
+        opts.Value("Sheet_Range") = PrintRangeEnum.kPrintAllSheets
+    End If
+    dm.FileName = System.IO.Path.Combine(outDir, baseName & ".pdf")
+    pdf.SaveCopyAs(doc, ctx, opts, dm)
+
+    If alsoDxf Then
+        Dim dxf As TranslatorAddIn = ThisApplication.ApplicationAddIns.ItemById("{C24E3AC4-122E-11D5-8E91-0010B541CD80}")
+        Dim dm2 As DataMedium = ThisApplication.TransientObjects.CreateDataMedium()
+        dm2.FileName = System.IO.Path.Combine(outDir, baseName & ".dxf")
+        Dim opts2 As NameValueMap = ThisApplication.TransientObjects.CreateNameValueMap()
+        dxf.SaveCopyAs(doc, ctx, opts2, dm2)
+    End If
+End Sub

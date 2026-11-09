@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Plain AutoCAD .NET plug-in: works in AutoCAD, Plant 3D, any toolset AND accoreconsole (no UI refs). -->
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <AssemblyName>AttributeTools</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Official Autodesk reference package; ExcludeAssets=runtime = never copy acdbmgd.dll etc. to output -->
+    <PackageReference Include="AutoCAD.NET.Core" Version="$(AcadNuGetVersion)" ExcludeAssets="runtime" />
+  </ItemGroup>
+</Project>

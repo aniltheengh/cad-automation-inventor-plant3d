@@ -1,0 +1,7 @@
+; titleblock_rev.scr - run on every drawing with ScriptPro, a .bat loop, or accoreconsole /s
+; Loads the LISP tools, sets REV=B and DATE on the title block, saves.
+; Paths with spaces must be in "quotes". Blank lines = ENTER, so keep the file tidy.
+(load "C:/CAD-Automation/code/plant3d/autolisp/att_tools.lsp")
+(att:set-all "TITLEBLOCK" "REV" "B")
+(att:set-all "TITLEBLOCK" "DATE" (menucmd "M=$(edtime,$(getvar,date),YYYY-MO-DD)"))
+_.QSAVE

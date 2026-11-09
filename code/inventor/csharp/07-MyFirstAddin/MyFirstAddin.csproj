@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Inventor 2025/2026/2027 in-process add-in (.NET 8 class library).
+    Build in VS 2022 (17.8+) -> the AfterBuild target copies the DLL + .addin to
+      %APPDATA%\Autodesk\ApplicationPlugins\MyFirstAddin\   (per-user, no admin rights)
+    Start Inventor (or press F5 with the "Inventor 2026" launch profile).
+  -->
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <OutputType>Library</OutputType>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>MyFirstAddin</RootNamespace>
+    <AssemblyName>MyFirstAddin</AssemblyName>
+    <!-- Inventor loads the DLL itself; it must be COM-visible for the GUID'd server class -->
+    <ComVisible>true</ComVisible>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <DeployDir>$(APPDATA)\Autodesk\ApplicationPlugins\MyFirstAddin</DeployDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="Autodesk.Inventor.Interop">
+      <HintPath>$(InventorBin)\Autodesk.Inventor.Interop.dll</HintPath>
+      <EmbedInteropTypes>false</EmbedInteropTypes>
+      <!-- Inventor already has the interop loaded; don't ship a second copy -->
+      <Private>false</Private>
+    </Reference>
+    <Compile Include="..\03-BatchExport\Exporter.cs" Link="Shared\Exporter.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="MyFirstAddin.addin">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <!-- Deploy on Windows only (skipped on CI / non-Windows syntax checks) -->
+  <Target Name="DeployToInventor" AfterTargets="Build" Condition="'$(OS)'=='Windows_NT' And '$(SkipDeploy)'!='true'">
+    <MakeDir Directories="$(DeployDir)" />
+    <Copy SourceFiles="$(TargetPath);$(OutDir)MyFirstAddin.addin" DestinationFolder="$(DeployDir)" SkipUnchangedFiles="true" />
+    <Message Importance="high" Text="Deployed to $(DeployDir) - restart Inventor to load." />
+  </Target>
+</Project>

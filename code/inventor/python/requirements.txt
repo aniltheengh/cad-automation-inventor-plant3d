@@ -1,0 +1,3 @@
+# Anaconda already includes most of these. In "Anaconda Prompt":  pip install -r requirements.txt
+pywin32>=306
+openpyxl>=3.1

@@ -1,0 +1,13 @@
+{
+  "id": "CreateGear",
+  "engine": "Autodesk.Inventor+2026",
+  "commandLine": [
+    "$(engine.path)\\InventorCoreConsole.exe /al \"$(appbundles[GearDAPlugin].path)\" \"$(args[params].path)\""
+  ],
+  "parameters": {
+    "params":    { "verb": "get", "localName": "params.json", "description": "gear parameters" },
+    "OutputIpt": { "verb": "put", "localName": "gear.ipt",    "description": "generated part" }
+  },
+  "appbundles": [ "<YOUR_CLIENT_ID>.GearDAPlugin+prod" ],
+  "description": "Create a spur gear blank from JSON (Inventor 2026 engine, .NET 8). Check engine id with GET /da/us-east/v3/engines"
+}

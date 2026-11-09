@@ -1,0 +1,7 @@
+; export_pdf_all_layouts.scr - plot every layout of the drawing to one PDF using EXPORTPDF (AutoCAD 2016+)
+; Works in full AutoCAD; in Core Console use -PLOT / PUBLISH instead (EXPORTPDF needs the UI layer - VERIFY).
+_.-EXPORT
+_PDF
+_All
+~
+_.QSAVE

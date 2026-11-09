@@ -1,0 +1,7 @@
+{
+  "activityId": "<YOUR_CLIENT_ID>.CreateGear+prod",
+  "arguments": {
+    "params":    { "url": "data:application/json,{\"module\":2,\"teeth\":40,\"faceWidth\":20,\"bore\":12}" },
+    "OutputIpt": { "verb": "put", "url": "<SIGNED_OSS_UPLOAD_URL>" }
+  }
+}

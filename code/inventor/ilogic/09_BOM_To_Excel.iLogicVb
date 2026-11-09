@@ -1,0 +1,28 @@
+' 09_BOM_To_Excel.iLogicVb  -  assembly: export Parts Only BOM using Inventor's own exporter,
+' then open it. For a formatted export without Excel drivers see code/inventor/csharp/05-BomToExcel.
+Sub Main()
+    If ThisDoc.Document.DocumentType <> DocumentTypeEnum.kAssemblyDocumentObject Then
+        MessageBox.Show("Open an assembly.") : Return
+    End If
+    Dim asm As AssemblyDocument = CType(ThisDoc.Document, AssemblyDocument)
+    Dim bom As BOM = asm.ComponentDefinition.BOM
+    bom.PartsOnlyViewEnabled = True
+    Dim view As BOMView = Nothing
+    For Each v As BOMView In bom.BOMViews
+        If v.ViewType = BOMViewTypeEnum.kPartsOnlyBOMViewType Then view = v
+    Next
+    Dim outFile As String = ThisDoc.PathAndFileName(False) & "_BOM.xlsx"
+    view.Export(outFile, FileFormatEnum.kMicrosoftExcelFormat)
+
+    ' quick summary in the iLogic log
+    Dim totalMass As Double = 0
+    For Each row As BOMRow In view.BOMRows
+        Dim cd As ComponentDefinition = row.ComponentDefinitions.Item(1)
+        Dim d As Document = CType(cd.Document, Document)
+        If TypeOf d Is PartDocument Then
+            totalMass += CType(d, PartDocument).ComponentDefinition.MassProperties.Mass * row.ItemQuantity
+        End If
+    Next
+    Logger.Info("Parts-only rows: " & view.BOMRows.Count & ", total part mass ~ " & Format(totalMass, "0.0") & " kg")
+    ThisDoc.Launch(outFile)
+End Sub

@@ -1,0 +1,18 @@
+<Project>
+  <!--
+    Shared settings for every Inventor project under code/inventor.
+    Change InventorBin if Inventor is installed somewhere else, or pass it on the command line:
+      dotnet build -p:InventorBin="D:\Autodesk\Inventor 2026\Bin"
+    Autodesk.Inventor.Interop.dll is in ...\Inventor 2026\Bin\ (also ...\Bin\Public Assemblies\ on most installs).
+    The interop DLL is Autodesk's - do NOT commit it to Git.
+  -->
+  <PropertyGroup>
+    <InventorVersion Condition="'$(InventorVersion)'==''">2026</InventorVersion>
+    <InventorBin Condition="'$(InventorBin)'==''">C:\Program Files\Autodesk\Inventor $(InventorVersion)\Bin</InventorBin>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <PlatformTarget>x64</PlatformTarget>
+    <!-- lets 'dotnet build' of a -windows target run on a non-Windows CI box (syntax/API check only) -->
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+  </PropertyGroup>
+</Project>

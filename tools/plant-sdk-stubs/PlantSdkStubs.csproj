@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- COMPILE-CHECK STUBS ONLY. Hand-written from public Autodesk samples
+       (github.com/ADN-DevTech/Plant3DTraining labs, Autodesk DevBlog / forum code). Every member here was
+       seen in those sources; signatures are approximations (parameter types may differ in the real SDK).
+       Never ship or reference this in a real build - use the Plant 3D SDK DLLs. -->
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>disable</Nullable>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <NoWarn>CS8618;CS0067</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoCAD.NET.Core" Version="25.1.0" ExcludeAssets="runtime" />
+  </ItemGroup>
+</Project>

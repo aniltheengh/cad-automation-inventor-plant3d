@@ -1,0 +1,35 @@
+' 04_Frame_Assembly_Driver.iLogicVb  -  internal rule in a TEMPLATE frame assembly
+' -------------------------------------------------------------------------------
+' Assembly user params: L, W, H (mm), Tube (text multi-value), HasShelf (True/False), BraceCount (ul)
+' Occurrence names (browser): "Leg:1".."Leg:4", "RailL:1","RailL:2","RailW:1","RailW:2","Shelf:1","Brace:1"
+' Each part has its own user params (e.g. Leg.ipt: Length, A, t).  We PUSH values down from the assembly.
+' Use with an iLogic Form (Form Editor) showing L, W, H, Tube, HasShelf, BraceCount -> "configurator".
+' To make NEW configurations instead of editing the template, use Vault Copy Design or iLogic Design Copy
+' first (Tools > iLogic Design Copy) - otherwise every configuration edits the same part files.
+Sub Main()
+    MultiValue.SetList("Tube", "30x30x2", "40x40x3", "50x50x3", "60x60x4")
+    Dim parts() As String = CStr(Parameter("Tube")).Split("x"c)
+    Dim A As Double = CDbl(parts(0)), t As Double = CDbl(parts(2))
+    Dim L As Double = Parameter("L"), W As Double = Parameter("W"), H As Double = Parameter("H")
+
+    ' push to parts (component-qualified Parameter calls change the PART file)
+    Parameter("Leg:1", "Length") = H
+    Parameter("RailL:1", "Length") = L - 2 * A
+    Parameter("RailW:1", "Length") = W - 2 * A
+    For Each occName As String In New String() {"Leg:1", "RailL:1", "RailW:1"}
+        Parameter(occName, "A") = A
+        Parameter(occName, "t") = t
+    Next
+
+    ' options
+    Component.IsActive("Shelf:1") = CBool(Parameter("HasShelf"))
+    If CBool(Parameter("HasShelf")) Then
+        Parameter("Shelf:1", "Length") = L - 2 * A
+        Parameter("Shelf:1", "Width") = W - 2 * A
+    End If
+    Dim n As Integer = CInt(Parameter("BraceCount"))
+    Component.IsActive("Brace:1") = (n > 0)
+
+    iProperties.Value("Project", "Description") = "FRAME " & L & "x" & W & "x" & H & " SHS" & Parameter("Tube")
+    iLogicVb.UpdateWhenDone = True
+End Sub
