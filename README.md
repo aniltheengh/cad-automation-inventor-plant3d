@@ -10,11 +10,20 @@ Companion to *pressure-vessel-fea-inventor-nastran*.
 > **Target setup:** Inventor 2026 · Visual Studio 2022 Community 17.14 (.NET desktop workload) · .NET SDK 9
 > (builds .NET 8 targets) · Anaconda Python · Plant 3D via trial/education/company licence ([how](docs/00-getting-started.md#getting-autocad-plant-3d)).
 
+## Mechanics of Materials / Strength of Materials — I and II
+
+**[Open the separate mechanics learning section](mechanics-of-materials/README.md)** — no programming required.
+
+- **26 chapters:** a two-course sequence from statics, stress and strain through beams, torsion, combined loading, buckling, energy methods, fatigue and introductory FEA.
+- **[Consolidated formula reference](mechanics-of-materials/formula-reference.md)** with assumptions and chapter links.
+- Plain-language explanations, worked calculations and practice questions with answers.
+- **[Attached textbook PDF: David Roylance, Modules in Mechanics of Materials](mechanics-of-materials/books/Roylance_Modules_in_Mechanics_of_Materials.pdf)** — 359 pages, MIT OpenCourseWare, CC BY-NC-SA 4.0. [Attribution and additional book](mechanics-of-materials/books/README.md).
+
 ## What is inside
 
 | | Count |
 |---|---|
-| Docs | 20 chapters (`docs/00`–`19`) |
+| Docs | 20 CAD automation chapters (`docs/00`–`19`) + 26 mechanics chapters in `mechanics-of-materials/` |
 | Projects | 13 complete projects ([docs/15](docs/15-projects.md)) |
 | C# / VB.NET projects | 12 (8 Inventor C#, 1 VB.NET, 1 Design Automation, 1 AutoCAD, 1 Plant 3D) |
 | iLogic rules | 10 |
@@ -131,4 +140,4 @@ dotnet run --project code\inventor\csharp\01-HelloInventor
 ## Licence
 
 MIT for the code in this repository. Autodesk product names are trademarks of Autodesk, Inc. No Autodesk
-binaries are included.
+binaries are included. The third-party mechanics textbook retains its separate CC BY-NC-SA 4.0 licence; see [book attribution](mechanics-of-materials/books/README.md).
