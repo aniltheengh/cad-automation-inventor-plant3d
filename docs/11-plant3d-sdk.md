@@ -19,6 +19,10 @@ Specify whether the operation covers one selection, one drawing or the project d
 > *Plant3DTraining* labs (written for Plant 3D 2011–2015 and still valid in structure), forum threads and
 > developer-blog posts. In this chapter every member name was taken from those public samples; anything
 > not seen there is marked **VERIFY**. Build against the real SDK before trusting a signature.
+>
+> **New to the API?** Read [11a — architecture and class hierarchy](11a-plant3d-api-architecture.md),
+> [11b — first add-in, step by step](11b-plant3d-first-addin.md) and [11c — code examples](11c-plant3d-code-examples.md) first;
+> this chapter is the reference for project data, specs, isos and custom parts.
 
 ## Contents
 - [How Plant 3D stores data](#how-plant-3d-stores-data)
@@ -75,7 +79,7 @@ MyProject\
 
 0. Match the release: Plant 3D **2026** = .NET 8 (default here); Plant 3D **2027** = .NET 10 → `-p:AcadRelease=2027` ([docs/00](00-getting-started.md#getting-autocad-plant-3d)). 2026 also introduced a redesigned Spec Editor; 2027 adds multi-sheet isometrics (Autodesk Plant 3D toolset page).
 1. Download the **AutoCAD Plant 3D 2026 SDK** (Autodesk developer site / APS → *Plant 3D*; ADN members via the ADN portal). Unzip, e.g. `C:\Autodesk\Plant3D 2026 SDK\`.
-2. Reference DLLs (from the SDK `inc-x64` folder, or the Plant 3D install folder `C:\Program Files\Autodesk\AutoCAD 2026\PLNT3D\` / AutoCAD folder — VERIFY which folder has which DLL on your install), all with **Copy Local = False**:
+2. Reference DLLs (from the SDK `inc-x64` folder, or the install folders: Autodesk's support article puts `PnPDataLinks.dll` and `PnPDataObjects.dll` in `C:\Program Files\Autodesk\AutoCAD 2026\` and `PnPProjectManagerMgd.dll` in its `PLNT3D\` subfolder — for the others, `P3DHELLO` prints the folder of every loaded Plant DLL), all with **Copy Local = False**:
 
    | DLL | Namespaces you use | For |
    |---|---|---|
@@ -86,7 +90,8 @@ MyProject\
    | `PnP3dObjectsMgd.dll` | `Autodesk.ProcessPower.PnP3dObjects` | `Part`, `Pipe`, `ConnectionIterator` |
    | `PnIdProjectPartsMgd.dll` | P&ID project part | `PnIdProject` |
    | `PnIDMgd.dll` | `Autodesk.ProcessPower.PnIDObjects`, `...Styles` | `LineSegment`, `Asset`, styles |
-   | `PnPCommonDbxMgd.dll` | `Autodesk.ProcessPower.PnPCommonDbx` | `FormatStringUtils` |
+   | `PnPCommonDbxMgd.dll` | `Autodesk.ProcessPower.PnPCommonDbx`, `Autodesk.ProcessPower.Styles` | `FormatStringUtils`, `Style`, `LineStyle`, `AssetStyle` |
+   | `PnPCommonMgd.dll` | — (no `using` needed) | base class of the table/column collections; without it: CS0012 |
 
    (DLL and namespace names from the ADN *Plant3DTraining* lab projects.)
 3. AutoCAD references: NuGet `AutoCAD.NET` 25.1.0 with `ExcludeAssets="runtime"` ([docs/10](10-autocad-dotnet-basics.md#project-setup-with-the-official-nuget-package)).
@@ -120,7 +125,7 @@ Project piping = prj.ProjectParts["Piping"];                   // 3D
 Project pid    = prj.ProjectParts["PnId"];                     // P&ID  (labs use both "PnId" and "PnID")
 DataLinksManager dlm = piping.DataLinksManager;
 PnPDatabase db = dlm.GetPnPDatabase();
-string folder = prj.ProjectDirectory;
+string folder = prj.ProjectFolderPath;                         // the project; a PART has ProjectDirectory
 ```
 
 Project part names come from `Project.xml`: typically `Piping`, `PnId`, `Ortho`, `Iso`. Typed versions:
@@ -141,14 +146,17 @@ to several DWG objects (e.g. a P&ID symbol and its tag annotation) — `PIDTAGS`
 
 | Member | Does |
 |---|---|
+| static `GetManager(Database db)` | the manager of the part a drawing belongs to ([11c, Example 2](11c-plant3d-code-examples.md#example-2--the-active-document-and-its-project-part)) |
 | `GetPnPDatabase()` | the project-part database |
+| `HasLinks(ObjectId)` | cheap test: is this a Plant object? — use before `FindAcPpRowId` |
+| `GetObjectClassname(ObjectId)` | project class (= table name) of a DWG object |
 | `FindAcPpRowId(ObjectId)` | row id of a DWG object (≤ 0 / exception if not a Plant object) |
 | `MakeAcPpObjectId(ObjectId)` / `FindAcPpObjectIds(int rowId)` / `MakeAcDbObjectId(PpObjectId)` | ID conversions |
-| `GetAllProperties(int rowId, bool includeNonVisible)` | `List<KeyValuePair<string,string>>` of every property |
+| `GetAllProperties(int rowId, bool)` — the labs pass `true` (meaning of the flag: VERIFY) | `List<KeyValuePair<string,string>>` of every property |
 | `SetProperties(int rowId, StringCollection names, StringCollection values)` | write properties (parallel collections) |
 | `GetRelatedRowIds(relationshipType, role1, rowId, role2)` | follow a relationship, e.g. `("P3dLineGroupPartRelationship", "LineGroup", lineRowId, "Part")` |
 | `Relate(...)` / `Unrelate(...)` | create/remove relationships (VERIFY signatures in SDK help) |
-| `GetDrawingId(...)` | which project drawing an object lives in (VERIFY signature) |
+| `GetDrawingId(Database db)` | id of a drawing in this part's database; `-1` = not a drawing of this part (forum) |
 | event `DataLinkOperationOccurred` | react to data changes |
 
 Our `Plant3DDataTools` uses exactly: `GetPnPDatabase`, `FindAcPpRowId`, `GetAllProperties`, `SetProperties`, `GetRelatedRowIds`.
@@ -338,4 +346,4 @@ Workflows"* (Oct 2026) lists: AutoLISP for AutoCAD-level automation; the **.NET 
 and that Autodesk support does not debug custom code. That matches this chapter: .NET for data, LISP/scripts
 for drawings, no Dynamo.
 
-Next: [12 — AutoLISP, scripts, Core Console, Python](12-autolisp-scripts-coreconsole-python.md).
+Next: [11a — Plant 3D .NET API architecture](11a-plant3d-api-architecture.md).

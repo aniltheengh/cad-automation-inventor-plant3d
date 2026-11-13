@@ -1,4 +1,4 @@
-# 15 — Projects: 13 complete projects in 8 languages
+# 15 — Projects: 14 complete projects in 8 languages
 
 ## Add-in learning levels
 
@@ -34,6 +34,7 @@ and **exercises** to extend it (the real learning happens in the exercises).
 | P11 | [Attribute tools](#p11-attribute-tools) | AutoCAD / Plant 3D | C#, AutoLISP, .scr, PowerShell, Python | ★ |
 | P12 | [Plant 3D data tools: line list, MTO, tags](#p12-plant-3d-data-tools) | Plant 3D | C# (Plant SDK), Python | ★★★ |
 | P13 | [Plant 3D custom part script](#p13-plant-3d-custom-part-script) | Plant 3D | Python (embedded) | ★★ |
+| P14 | [Plant 3D add-in starter: components and properties](#p14-plant-3d-add-in-starter) | Plant 3D | C# (Plant SDK) | ★★ |
 
 ★ = first week, ★★ = after the basics, ★★★ = needs SDK/cloud setup.
 
@@ -205,6 +206,24 @@ P&ID tag export; then Python for the Excel report.
 2. Add a parameter `B` (bevel) shown in Catalog Builder.
 3. Build a spectacle blind (two discs + web) — check port directions carefully.
 
+## P14 Plant 3D add-in starter
+
+**Files:** `code/plant3d/csharp/Plant3DAddinStarter` (PlantAddin, PlantContext, ComponentReader, commands, bundle).
+
+**Learn:** the Plant 3D .NET class hierarchy, `IExtensionApplication`, the three ways to load a DLL (NETLOAD,
+bundle, registry), the chain application → document → project part → DataLinksManager, reading classes,
+properties, ports, connections and line numbers.
+
+**Steps:** read [11a](11a-plant3d-api-architecture.md) → follow [11b](11b-plant3d-first-addin.md) by hand
+(`MYHELLO`) → build the starter → `P3DHELLO` → `P3DAPIMAP` → open a 3D model drawing → `P3DCOMPONENTS`,
+`P3DINSPECT`, `P3DWALK` ([11c](11c-plant3d-code-examples.md)).
+
+**Exercises:**
+1. Settle the **VERIFY** items of 11a–11c with `P3DHELLO` and `P3DAPIMAP` on your release; fix the docs.
+2. `P3DOPENENDS`: every port in the drawing that `IsConnected` reports as open → CSV with handle and position.
+3. `P3DSELECT`: ask for a project class and select its objects (Example 8 in 11c + `SetImpliedSelection`).
+4. Add pipe supports to `ComponentReader.Kind` once `P3DAPIMAP` shows their .NET class.
+
 ## Suggested 8-week plan
 
 | Week | Projects |
@@ -215,7 +234,7 @@ P&ID tag export; then Python for the Excel report.
 | 4 | P7 |
 | 5 | P5, P8 |
 | 6 | P11 (plain AutoCAD is enough) |
-| 7 | P12, P13 (Plant 3D trial) |
+| 7 | P14, P12, P13 (Plant 3D trial) |
 | 8 | P10 (APS account) |
 
 Next: [16 — glossary](16-glossary.md).

@@ -77,6 +77,12 @@ script flags them even though they open fine in a browser; Autodesk support/help
 | Autodesk — [Education](https://www.autodesk.com/education/home) | education licence |
 | Autodesk University 2011 PD1746 / PD4214-L handouts — *Scripting Components for AutoCAD Plant 3D* | custom part script decorators and primitives |
 | Autodesk Developer Blog series *Custom Python Scripts for AutoCAD Plant 3D* (David Wolfe) | registration (`PLANTREGISTERCUSTOMSCRIPTS`), `testacpscript` |
+| Autodesk — [Which DLL-files are needed to create a plug-in for AutoCAD Plant 3D?](https://www.autodesk.com/support/technical/article/caas/sfdcarticles/sfdcarticles/Which-DLL-files-are-needed-to-create-a-plug-in-for-AutoCAD-Plant-3D.html) | DLL folders ([11a](../docs/11a-plant3d-api-architecture.md), [11b](../docs/11b-plant3d-first-addin.md)) |
+| Autodesk Developer Blog — [pipe port connections](https://blog.autodesk.io/retrieving-iso-arrow-symbols-and-pipe-port-connections/), [GetRelatedRowIds](https://blog.autodesk.io/using-getrelatedrowids-method/) | `Port`, `Pair`, `ConnectionManager.GetConnectedPairAt`, relationships |
+| GitHub — [CLIPLANT360SHARE](https://github.com/MadhukarMoogala/CLIPLANT360SHARE) (Autodesk developer advocate, 2024) | `PlantProject.Name`, `ProjectFolderPath` |
+| GitHub — [speckle-sharp-connectors, Converters/Plant3d](https://github.com/specklesystems/speckle-sharp-connectors) (Apache-2.0) | API use built against Plant 3D 2026/2027: `HasLinks`, `GetObjectClassname`, `BaseTableName`, line-group relationships |
+| Autodesk help — [Application Initialization and Load-Time Optimization (.NET)](https://help.autodesk.com/cloudhelp/2021/ENU/OARX-DevGuide-Managed/files/GUID-FA3B4125-F7BD-4E89-969F-9DCC90AC6977.htm), [Distribute Your Application (.NET)](https://help.autodesk.com/cloudhelp/2015/ENU/AutoCAD-NET/files/GUID-70D60274-57E0-4B22-8D0C-3C7F212A7CAF.htm) | `IExtensionApplication`, `ExtensionApplication` / `CommandClass`, registry demand loading |
+| Autodesk help — [RuntimeRequirements element](https://help.autodesk.com/cloudhelp/2025/ENU/AutoCAD-Customization/files/GUID-1591CA01-EF87-48CD-952B-772FE26037F1.htm) | `Platform="Plant3D"`, `SeriesMin` / `SeriesMax` |
 
 ## Libraries used in this repo
 

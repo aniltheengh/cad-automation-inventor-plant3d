@@ -197,6 +197,13 @@ Version map: Inventor 2023/2024 = net48; 2025/2026 = .NET 8 (2026.4 runs .NET 10
 | `SetProperties` exception | read-only property, value not allowed, drawing locked by another user | write only editable properties; check project locks |
 | Plant objects shown as proxies | object enablers not loaded (plain AutoCAD, Core Console) | open in Plant 3D; in Core Console `arx L PnP3dObjects.dbx` |
 | Core Console: `Unknown command` for Plant commands | Plant environment not loaded in Core Console | by design — use full Plant 3D for Plant commands |
+| `CS0012 … PnPGenericNamedCollection … is defined in an assembly that is not referenced` | `PnPCommonMgd.dll` not referenced | add it, Copy Local False ([11b](11b-plant3d-first-addin.md#step-3--reference-the-autocad-and-plant-3d-assemblies)) |
+| `CS0104 'Exception'` / `'Registry'` is an ambiguous reference | `Autodesk.AutoCAD.Runtime` has classes with these names | `System.Exception`; `using Win32 = Microsoft.Win32;` |
+| `'PlantProject' does not contain a definition for 'ProjectDirectory'` | `ProjectDirectory` belongs to a project **part** | `PlantProject.ProjectFolderPath`, or `part.ProjectDirectory` ([11a](11a-plant3d-api-architecture.md#class-hierarchy-1-application-project-data)) |
+| Add-in loads but `Unknown command` everywhere; nothing on the command line | exception in `IExtensionApplication.Initialize` | `try/catch` in `Initialize`, no drawing or project work there ([11b](11b-plant3d-first-addin.md#step-4--implement-iextensionapplication)) |
+| Bundle with `Platform="Plant3D"` not loaded | started plain AutoCAD; `SeriesMin/Max` exclude the release; `APPAUTOLOAD` = 0 | [11b troubleshooting](11b-plant3d-first-addin.md#troubleshooting) |
+| Registry-loaded add-in gone after an upgrade or in another language | the key is per release and language (`R25.1\ACAD-9117:409`) | register again in the new product (`P3DREGISTER`) or use a bundle |
+| `P3DCOMPONENTS`: "No Plant objects" in an ortho drawing | ortho views are generated geometry without row ids | read from the 3D model drawing ([11c](11c-plant3d-code-examples.md#orthographic-and-isometric-drawings)) |
 
 ## Security: blocked files, SECURELOAD, access denied
 

@@ -131,6 +131,8 @@ where they differ.
 | Script (.scr) | スクリプト | keystroke file |
 | Core Console (accoreconsole) | コア コンソール | AutoCAD without UI for batch |
 | Bundle / PackageContents.xml | バンドル | autoloader package format |
+| IExtensionApplication | | entry-point interface of an AutoCAD .NET DLL: `Initialize` / `Terminate` |
+| Demand loading | デマンド ロード | loading a DLL from registry values (`LOADER`, `LOADCTRLS`) |
 | SECURELOAD / TRUSTEDPATHS | | code-loading security / trusted folders |
 | Object enabler | オブジェクト イネーブラ | DBX that lets other apps show custom objects |
 | Proxy object | プロキシ オブジェクト | custom object shown without its enabler |
@@ -141,6 +143,9 @@ where they differ.
 | DataLinksManager | | API link between DWG objects and database rows |
 | PnPDatabase / PnPTable / PnPRow | | API database, table, row |
 | PnPID / row id | | permanent row number of a Plant object |
+| Project class | クラス | class in Project Setup = table in the project database (`Pipe`, `Elbow`…); parent via `BaseTableName` |
+| Relationship | リレーションシップ | link between two rows with a type and two role names (`P3dLineGroupPartRelationship`) |
+| Port / Pair / Connector | ポート / — / コネクタ | connection point of a part / object + port / the joint between two ports |
 | Line group / line number | ライン グループ / ライン番号 | `P3dLineGroup` |
 | Spec (`.pspx`) / Catalog (`.pcat`) | 仕様 / カタログ | allowed parts per service class / all parts |
 | Spec Editor / Catalog Builder | 仕様エディタ / カタログ ビルダー | UI tools for specs/catalogs |

@@ -10,7 +10,7 @@ fail=0
 build() { echo "== $1"; if dotnet build "$1" -nologo -v q -p:InventorBin="$INV" -p:SkipDeploy=true $2 2>&1 | grep -E " error |Build succeeded" | sort -u; then :; fi
           dotnet build "$1" -nologo -v q -p:InventorBin="$INV" -p:SkipDeploy=true $2 >/dev/null 2>&1 || fail=1; }
 for p in code/inventor/csharp/0*/ code/inventor/vbnet/*/ code/inventor/design-automation/*/ code/autocad/csharp/*/; do build "$p" ""; done
-build code/plant3d/csharp/Plant3DDataTools/ "-p:PlantStubs=true"
+for p in code/plant3d/csharp/*/; do build "$p" "-p:PlantStubs=true"; done
 python3 tools/check_ilogic.py --inventor-bin "$INV" || fail=1
 python3 -m py_compile $(find code tools -name "*.py" -not -path "*/obj/*") && echo "py_compile OK" || fail=1
 python3 tools/lisp_check.py || fail=1

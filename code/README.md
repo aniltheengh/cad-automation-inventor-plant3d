@@ -29,6 +29,7 @@ code/
 │   └── csharp/AttributeTools/       ATTEXPORT / ATTIMPORT / ATTREPLACE (Core-Console safe)
 └── plant3d/
     ├── Directory.Build.props        Plant SDK path + AutoCAD NuGet pin
+    ├── csharp/Plant3DAddinStarter/  first add-in: IExtensionApplication, bundle, registry; components + properties
     ├── csharp/Plant3DDataTools/     Plant SDK: tables, line list, MTO, set props, P&ID tags
     ├── autolisp/                    attribute tools + small Plant helpers
     ├── scripts/                     .scr scripts, Core Console batch (.bat + PowerShell parallel)

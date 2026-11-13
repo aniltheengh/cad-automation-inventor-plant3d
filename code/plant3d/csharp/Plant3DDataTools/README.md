@@ -20,7 +20,8 @@
 `NETLOAD` inside **Plant 3D** with a project open (the commands need `PlantApplication.CurrentProject`). In
 plain AutoCAD they fail at `CurrentProject` — by design.
 
-See [docs/11-plant3d-sdk.md](../../../../docs/11-plant3d-sdk.md).
+See [docs/11-plant3d-sdk.md](../../../../docs/11-plant3d-sdk.md). API map and a standalone read-only starter add-in:
+[docs/11a–11c](../../../../docs/11a-plant3d-api-architecture.md), [Plant3DAddinStarter](../Plant3DAddinStarter/).
 
 ## Learn add-in development
 

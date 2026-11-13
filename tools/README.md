@@ -7,8 +7,8 @@ So the repo checks what *can* be checked and says clearly what was not.
 |---|---|---|
 | `build_all.sh` / `build_all.ps1` | builds every C#/VB.NET project, then runs all checks below | .NET 8+ SDK; Inventor interop DLL path |
 | `check_ilogic.py` + `ilogic-check/` | each `.iLogicVb` rule compiles as VB.NET against the **real** Inventor interop + iLogic **stubs**; 2nd pass Option Strict On lists late-bound calls | .NET SDK, interop DLL |
-| `plant-sdk-stubs/` | stub assembly so `Plant3DDataTools` compiles without the Plant SDK (`-p:PlantStubs=true`) | .NET SDK |
-| `test_tools.py` | gear math vs. textbook values; C# `GearMath` == Python `gear_math` (1e-12); tooth-space sketch validity; LISP checker; add-in GUID match | Python 3.10+, dotnet optional |
+| `plant-sdk-stubs/` | stub assembly so both Plant 3D projects (`Plant3DDataTools`, `Plant3DAddinStarter`) compile without the Plant SDK (`-p:PlantStubs=true`) | .NET SDK |
+| `test_tools.py` | gear math vs. textbook values; C# `GearMath` == Python `gear_math` (1e-12); tooth-space sketch validity; LISP checker; add-in GUID match; Plant starter: commands in code == bundle == docs, code excerpts in docs/11c == source | Python 3.10+, dotnet optional |
 | `gearmath-check/` | tiny console that runs the C# gear math and prints JSON (used by `test_tools.py`) | .NET SDK |
 | `lisp_check.py` | AutoLISP parens/strings/comments, duplicate `c:` commands, final `(princ)` | Python |
 | `check_powershell.ps1` | every `.ps1` parses with the real PowerShell parser | PowerShell 7 |

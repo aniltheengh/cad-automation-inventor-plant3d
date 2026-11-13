@@ -21,8 +21,9 @@
          25.1.1 = 2026.1.2+ (net10.0 only), 26.0.0 = 2027 (net10.0). Keep 25.1.0 to load in 2025.x AND 2026.x. -->
     <AcadNuGetVersion Condition="'$(AcadNuGetVersion)'==''">25.1.0</AcadNuGetVersion>
     <!-- Plant 3D managed DLLs: from the Plant 3D SDK (inc-x64) or the install folders.
-         Most are in "C:\Program Files\Autodesk\AutoCAD 2026\PLNT3D", some (PnPDataLinks, PnPCommonMgd)
-         in "C:\Program Files\Autodesk\AutoCAD 2026". Copy the ones you need into ONE folder and point here. -->
+         Most are in "C:\Program Files\Autodesk\AutoCAD 2026\PLNT3D", some (PnPDataLinks, PnPDataObjects,
+         PnPCommonMgd) in "C:\Program Files\Autodesk\AutoCAD 2026". Copy the ones you need into ONE folder and
+         point here. Which folder holds which DLL on your PC: command P3DHELLO, docs/11a. -->
     <PlantSdkInc Condition="'$(PlantSdkInc)'==''">C:\Autodesk\Plant3D $(AcadRelease) SDK\inc-x64</PlantSdkInc>
   </PropertyGroup>
 </Project>

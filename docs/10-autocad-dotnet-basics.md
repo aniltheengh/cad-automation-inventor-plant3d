@@ -192,7 +192,7 @@ side.SaveAs(path, DwgVersion.Current);
 | `NETLOAD` → pick DLL | development |
 | `(command "NETLOAD" "C:/Tools/AttributeTools.dll")` in `acaddoc.lsp` | quick team setup |
 | **Autoloader `.bundle`** | proper deployment (below) |
-| Registry demand-loading | legacy; avoid |
+| Registry demand-loading | older, still supported: one key per release and language; for existing installers. How: [11b, step 8](11b-plant3d-first-addin.md#way-b--demand-loading-registry-key) |
 
 Autoloader bundle:
 
@@ -220,7 +220,7 @@ AttributeTools.bundle\
 ```
 
 - `SeriesMin/SeriesMax`: R25.0 = AutoCAD 2025, R25.1 = 2026 (2027 = R26.0). AutoCAD 2025+ requires these for .NET 8 bundles, so a .NET Framework bundle for 2024 and a .NET 8 bundle for 2025/26 can coexist.
-- `Platform="AutoCAD*"` = all AutoCAD-based products (Plant 3D included). Use `PLNT3D` to restrict to Plant 3D (VERIFY the exact product code string in your PackageContents examples).
+- `Platform="AutoCAD*"` = all AutoCAD-based products (Plant 3D included). `Platform="Plant3D"` restricts the bundle to Plant 3D, `PNID` to P&ID; several values are joined with `|` (Autodesk *RuntimeRequirements* reference). Full Plant 3D bundle: [11b](11b-plant3d-first-addin.md#way-a--autoloader-bundle-recommended).
 - Bundle folders in **2026**: `%APPDATA%\Autodesk\ApplicationPlugins\` (per user) or `C:\Program Files\Autodesk\ApplicationPlugins\` (all users). AutoCAD 2026 made the old `C:\ProgramData\Autodesk\ApplicationPlugins` location **obsolete** for security.
 - **SECURELOAD** (default 1): AutoCAD only loads code from *trusted locations* without asking. Add your folder to `TRUSTEDPATHS` (*Options → Files → Trusted Locations*) — the ApplicationPlugins folders are trusted by default. Never set `SECURELOAD 0` company-wide.
 
@@ -237,4 +237,4 @@ AttributeTools.bundle\
 - Layer/block names in Japanese are fine in .NET (UTF-16). In CSV use UTF-8 **with BOM** for Excel.
 - `.scr` and `.lsp` files: save as UTF-8? AutoCAD's LISP reader historically expects the system code page (Shift-JIS on Japanese Windows) for non-ASCII string literals — VERIFY with your version; keep non-ASCII text out of scripts or test first.
 
-Next: [11 — Plant 3D SDK](11-plant3d-sdk.md).
+Next: [11 — Plant 3D SDK](11-plant3d-sdk.md). For the Plant 3D API from the ground up: [11a](11a-plant3d-api-architecture.md) → [11b](11b-plant3d-first-addin.md) → [11c](11c-plant3d-code-examples.md).

@@ -18,6 +18,8 @@
     <Reference Include="PnP3dProjectPartsMgd"><HintPath>$(PlantSdkInc)\PnP3dProjectPartsMgd.dll</HintPath><Private>false</Private></Reference>
     <Reference Include="PnPDataLinks"><HintPath>$(PlantSdkInc)\PnPDataLinks.dll</HintPath><Private>false</Private></Reference>
     <Reference Include="PnPDataObjects"><HintPath>$(PlantSdkInc)\PnPDataObjects.dll</HintPath><Private>false</Private></Reference>
+    <!-- No "using" needs this one, but the table/column collections derive from a class in it (else: CS0012) -->
+    <Reference Include="PnPCommonMgd"><HintPath>$(PlantSdkInc)\PnPCommonMgd.dll</HintPath><Private>false</Private></Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(PlantStubs)'=='true'">
     <ProjectReference Include="..\..\..\..\tools\plant-sdk-stubs\PlantSdkStubs.csproj" />

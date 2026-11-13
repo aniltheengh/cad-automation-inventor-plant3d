@@ -37,6 +37,8 @@ namespace Plant3DDataTools
 
         public static string Csv(string s) => "\"" + s.Replace("\"", "\"\"") + "\"";
 
-        public static string ProjectFolder() => PlantApplication.CurrentProject.ProjectDirectory;
+        // PlantProject.ProjectFolderPath: the member Autodesk's own sample uses (CLIPLANT360SHARE, 2024).
+        // ProjectDirectory belongs to a project PART (Project), not to PlantProject - see docs/11a.
+        public static string ProjectFolder() => PlantApplication.CurrentProject.ProjectFolderPath;
     }
 }
