@@ -1,5 +1,17 @@
 # 01 — Choosing a language (and a hosting model)
 
+## Add-in learning levels
+
+### Beginner — choose one route
+For this learning goal, use **C# inside Plant 3D**. “Inside” means Plant loads your compiled library and calls its commands. You can postpone the other languages and hosting models on this page. Begin with [workbook B3](19-addin-learning-from-zero.md), a tiny console program that teaches C# without CAD dependencies.
+
+### Transition — distinguish a program from an add-in
+An executable starts as its own program; an add-in waits for its host to load it. **Exercise:** draw the steps from editing a .cs file to typing a command in Plant. **Answer:** edit → build → DLL → NETLOAD in Plant → command method. The console exercise teaches language concepts; its startup mechanism is not the Plant add-in startup mechanism.
+
+### Intermediate — choose by required access
+Write the tool's input, output and required CAD context before choosing a host. A current-project property checker needs Plant project data; formatting an already exported CSV may not. Keep CAD-dependent operations in the supported host context. **Checkpoint:** explain why a working ordinary-DWG script or external console program does not establish that Plant-specific project operations will work there.
+
+
 The real choice is not "which language" but **where the code runs** and **who starts it**. The
 language follows from that.
 

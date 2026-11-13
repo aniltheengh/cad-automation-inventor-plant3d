@@ -1,5 +1,21 @@
 # 15 — Projects: 13 complete projects in 8 languages
 
+## Add-in learning levels
+
+The existing project numbers below are unchanged. These are smaller exercises that lead into them; they are not additional finished applications.
+
+### Beginner — a greeting and one rule
+Complete [workbook B3–B5](19-addin-learning-from-zero.md), then chapter 18's P3DHELLO exercise. **Deliverable:** a changed greeting and a rule that counts missing text values. **Pass:** explain each line and predict output for empty versus populated text.
+
+### Transition — a read-only property inspector
+Read PIDPICK, identify its assumptions, and adapt a practice command for the correct project part and one discovered property. Add clear behavior for cancellation, no project and unavailable data. **Deliverable:** a small command whose output you can compare to Data Manager. **Pass:** demonstrate each case in a disposable project. Follow workbook T3–T4.
+
+### Intermediate — a missing-tag report
+Use workbook I1–I6 to specify scope, collect data, validate values and export checked results. Add a button or bundle only after the command works. **Deliverable:** a report with expected counts and documented limitations. **Pass:** verify a normal case, an empty result and a failed prerequisite.
+
+P7 is the Inventor add-in path. P11 teaches general DWG automation. P12 supplies Plant examples to study; its CSV writer belongs after read-only inspection and reporting. P13's Python component scripting is a separate specialist path.
+
+
 Each project is complete code in `code/`, with its own README. Here: what you learn, in which order,
 and **exercises** to extend it (the real learning happens in the exercises).
 

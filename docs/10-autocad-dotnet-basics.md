@@ -1,5 +1,17 @@
 # 10 — AutoCAD .NET basics (the foundation for Plant 3D)
 
+## Add-in learning levels
+
+### Beginner — run a command before editing a drawing
+Use [chapter 18's P3DHELLO exercise](18-plant3d-addin-development.md). A document is the open drawing context; its editor handles prompts and messages. Learn these two ideas before transactions or bulk operations. **Checkpoint:** type the command and explain where its message comes from.
+
+### Transition — selection and read-only access
+Follow a selection prompt, its status check and its returned ObjectId. An ObjectId refers to an object; it is not itself the complete object's properties. Study how a transaction opens a drawing object for reading. **Exercise:** press Escape at selection. **Expected:** a properly guarded command stops without treating cancellation as a selected object. Read [workbook T1–T5](19-addin-learning-from-zero.md).
+
+### Intermediate — context, transactions and UI
+Keep transaction-owned objects within their valid access lifetime. Learn when a document lock and command context are needed before adding modeless windows or editing another document. **Checkpoint:** explain which drawing your tool uses after the user switches tabs, and test that behavior. Ordinary AutoCAD entity access supplies the drawing layer; use [chapter 11](11-plant3d-sdk.md) for linked Plant properties.
+
+
 **Plant 3D *is* AutoCAD** with extra object types, a project database and the Plant SDK on top. Every
 Plant 3D plug-in is first an AutoCAD .NET plug-in. Learn this layer with plain AutoCAD (or the Plant 3D
 trial), then add the Plant API ([docs/11](11-plant3d-sdk.md)).

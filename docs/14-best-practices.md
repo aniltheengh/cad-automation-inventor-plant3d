@@ -1,5 +1,17 @@
 # 14 — Best practices: version control, testing, deployment, packaging, performance
 
+## Add-in learning levels
+
+### Beginner — keep a recoverable working version
+Save your source and keep a brief note of each successful change. Learn that Git tracks text revisions; a build creates output from that text. Use a disposable project for exercises. **Checkpoint:** identify the last version whose behavior you checked. [Workbook's learning record](19-addin-learning-from-zero.md) provides a simple format.
+
+### Transition — separate responsibilities and check results
+Keep a command's prompts, data reading and validation understandable as separate steps. Check a normal input, a missing input and cancellation. **Exercise:** does successful compilation prove a report's counts are right? **Answer:** no; compare against known project data. Write installation and command instructions while you still remember the setup.
+
+### Intermediate — release a repeatable tool
+Record the tested host/update and dependencies, package only the intended files, restart and verify loading. Test project switches and failure paths, not only a successful demonstration. For writes, verify partial failures and saved/reopened data. **Checkpoint:** another person can follow the instructions and identify both successful output and a failed run. Add UI and performance work after correctness and clear behavior are established.
+
+
 Automation code is engineering work: it needs revision control, checking and release management like a
 drawing. This page is the "how we do it properly" checklist.
 

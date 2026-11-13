@@ -1,5 +1,19 @@
 # 06 — Inventor add-ins (C# / VB.NET): manifest, ribbon, deployment, debugging
 
+## Add-in learning levels
+
+This is the **Inventor** add-in chapter. Plant learners can skip its implementation and continue with [chapter 18](18-plant3d-addin-development.md); the conceptual lessons transfer, but the host interfaces and manifests differ.
+
+### Beginner — understand a host-loaded library
+An add-in adds behavior to a larger application. Read the loading diagram below and identify the DLL, host and entry point. **Checkpoint:** explain why a compiled library is not normally started by double-clicking it like an application.
+
+### Transition — follow one action through the host
+For Inventor, trace Activate → button creation → button event → command logic. For Plant, trace DLL load → registered command → command method. **Exercise:** can you copy an Inventor .addin manifest to register a Plant command? **Answer:** no; use Plant/AutoCAD's loading and bundle mechanisms. Reuse your C# learning, not the wrong host plumbing.
+
+### Intermediate — UI and lifecycle
+Separate button creation from the work performed when clicked. Track event subscriptions and release them appropriately. Test closing/switching documents and reopening the host. **Checkpoint:** adding another button does not duplicate subscriptions or make the tool operate on a stale document. Use the relevant host's version-matched documentation for lifecycle and deployment details.
+
+
 An add-in is a .NET class library that **Inventor loads into its own process** at start-up. It is how
 professional tools put buttons on the ribbon, react to events and run at full API speed.
 

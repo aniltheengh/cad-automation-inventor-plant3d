@@ -1,5 +1,17 @@
 # 11 — AutoCAD Plant 3D: SDK, project data, piping, P&ID, specs, Isogen, custom parts
 
+## Add-in learning levels
+
+### Beginner — connect a drawing object to its information
+Think of a valve's drawing object and its project-data record as linked pieces of information. First inspect a known object manually in Data Manager. Write down one property name and value. **Checkpoint:** distinguish geometry from project properties. Read [workbook B1 and T3](19-addin-learning-from-zero.md) before the API tables below.
+
+### Transition — trace project, part, manager and row
+Read PlantHelpers and PIDPICK. Follow current project → project part → DataLinksManager → row lookup → property values. Identify where no project, an ordinary entity or a missing property could interrupt the sequence. **Exercise:** explain why a piping manager should not be assumed correct for a P&ID object. **Answer:** each project part has its own data context. Existing samples need explicit error handling before being used as robust tools.
+
+### Intermediate — define scope before queries or changes
+Specify whether the operation covers one selection, one drawing or the project database. Reconcile an export against a small known project. Add validation and a preview before writing properties; test actual persistence after save/reopen. **Checkpoint:** distinguish one row per line group from one row per component, and piece counts from pipe length. Routing, connectivity edits, catalogs and isometrics are later specialist topics, not prerequisites for a first property-reporting add-in.
+
+
 **Dedicated add-in track:** [Chapter 18 — Plant 3D add-in development with C#](18-plant3d-addin-development.md) covers commands, lifecycle, debugging and deployment. Read its version-matching guidance before using the original .NET 8 setup below.
 
 > **Honesty first.** The Plant 3D API is real and powerful, but its public documentation is **thin**.
@@ -165,7 +177,7 @@ string cls = db.GetRowTableName(rowId);                                     // "
 | `PnPDataLinks` | DWG-object ↔ row links (internal; read only) |
 
 Column names differ by project (custom properties added in *Project Setup*). Always **discover**:
-`P3DTABLES` lists tables; `P3DDUMP` writes any table to CSV; `PIDPICK` prints all properties of a
+`P3DTABLES` lists tables; `P3DDUMP` writes a chosen table to CSV; `PIDPICK` prints properties of a
 picked object. Then code against real names.
 
 Write access through rows (`BeginEdit` / set indexer / `EndEdit`) exists in the labs; for **user-visible

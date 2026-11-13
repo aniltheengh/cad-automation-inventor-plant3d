@@ -6,6 +6,24 @@ A dedicated learning path for building a DLL that runs **inside AutoCAD Plant 3D
 
 **Status:** this is a development guide with an illustrative C# extension. The existing Plant examples have a stub-based compilation route; neither that route nor this guide proves compatibility with your installed SDK. Build with real Autodesk references and complete the manual checks below before using a tool on a working project.
 
+## Beginner — build confidence before the API details
+
+Start with [chapter 19's from-zero workbook](19-addin-learning-from-zero.md). It explains C#, Visual Studio, source files, builds and DLLs, then teaches variables, conditions and loops with small examples and answers.
+
+Read sections 1–4 below after the workbook's beginner exercises. Your first goal is a greeting command you can explain. **Checkpoint:** build, load and change its greeting, and identify the file and DLL you used. No ribbon or database-writing code is required for this milestone.
+
+## Transition — turn a copied example into an understood command
+
+Follow workbook T1–T5, then sections 5–6 below. Read one command from its registration attribute to its final output. Trace the current document, project part, selected object and property values. **Checkpoint:** explain where each value comes from, inspect one in the debugger and handle cancellation or missing data in your practice command.
+
+Use PIDPICK to study the property-reading sequence and P3DDUMP to study table export. They perform different jobs; the existing samples need additional guards for a robust beginner-facing tool.
+
+## Intermediate — create a small useful tool
+
+Follow workbook I1–I6, then sections 7–10 below. Start with a read-only report of explicitly defined scope. Separate prompts, data access, validation and formatting. **Checkpoint:** reconcile the result with a known small drawing, demonstrate failure cases, then package and test a fresh session. Add property writes and modeless UI as separate later milestones.
+
+The sections that follow are the technical reference for these stages. Read only the part needed for your current small action.
+
 ## 1. What you are building
 
 | Layer | Responsibility | Examples |
@@ -17,7 +35,7 @@ A dedicated learning path for building a DLL that runs **inside AutoCAD Plant 3D
 
 A command-only DLL is already an add-in. A ribbon or palette can be added later. Plant properties require the Plant APIs; editing an ordinary block attribute does not necessarily update Plant project data.
 
-The first deliverable is small: load your DLL, type a command, select a piping component and inspect its properties. Keep Python catalog geometry scripting as a separate workflow; see [chapter 11](11-plant3d-sdk.md).
+The first deliverable is small: load your DLL, type a greeting command and understand its output. Progress to a guarded property reader after that. Keep Python catalog geometry scripting as a separate workflow; see [chapter 11](11-plant3d-sdk.md).
 
 ## 2. Prepare a version-matched development environment
 
@@ -68,6 +86,9 @@ As an exercise, add `AddinEntry.cs` to the existing Plant3DDataTools project:
 using Autodesk.AutoCAD.Runtime;
 using AcadApp = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
+[assembly: ExtensionApplication(typeof(Plant3DDataTools.AddinEntry))]
+[assembly: CommandClass(typeof(Plant3DDataTools.AddinEntry))]
+
 namespace Plant3DDataTools
 {
     public sealed class AddinEntry : IExtensionApplication
@@ -90,13 +111,13 @@ namespace Plant3DDataTools
                 return;
 
             doc.Editor.WriteMessage(
-                "\nPlant add-in loaded. Next: run P3DDUMP in a project model drawing.");
+                "\nPlant add-in loaded. Your first command is working.");
         }
     }
 }
 ```
 
-This introductory command uses the AutoCAD API. The next step uses the Plant API. The snippet is an exercise, not an additional source file already included in the project.
+This introductory command uses the AutoCAD API. The next step uses the Plant API. The snippet is an exercise, not an additional source file already included in the project. Its assembly attributes identify this extension class and register its command class. Keep the existing PipingCommands and PidCommands assembly attributes: the project already uses explicit command-class registration.
 
 AutoCAD discovers public command handlers through their attributes. Lifecycle hooks are optional. If you later add assembly-level `CommandClass` attributes, include **every** class containing commands, including the existing piping and P&ID command classes; otherwise those commands can disappear from discovery. Autodesk documents this behavior in [application initialization](https://help.autodesk.com/cloudhelp/2022/ENU/OARX-DevGuide-Managed/files/GUID-FA3B4125-F7BD-4E89-969F-9DCC90AC6977.htm).
 
@@ -105,7 +126,7 @@ AutoCAD discovers public command handlers through their attributes. Lifecycle ho
 1. Build using real SDK references.
 2. Launch the installed **Plant 3D** shortcut and open the disposable project/model drawing.
 3. Run `NETLOAD` and select the built `Plant3DDataTools.dll`.
-4. Run `P3DHELLO` if you added the exercise, then the existing `P3DDUMP` command.
+4. Run `P3DHELLO` if you added the exercise, then inspect existing commands as described in the workbook. P3DDUMP exports a table to CSV; it is not an object-selection command.
 5. In Visual Studio, attach to the correct `acad.exe` process with the managed debugger, set a breakpoint in the command and run it again. Keep the matching PDB alongside the Debug DLL.
 6. Restart Plant 3D after rebuilding an already loaded managed assembly. Normal managed add-ins cannot be manually unloaded.
 
@@ -113,7 +134,7 @@ For launch-from-debugger setup, copy the executable and arguments from your inst
 
 ## 6. Follow the Plant API data path
 
-Read [PlantHelpers.cs](../code/plant3d/csharp/Plant3DDataTools/PlantHelpers.cs) and [PipingCommands.cs](../code/plant3d/csharp/Plant3DDataTools/PipingCommands.cs) side by side.
+Read [PlantHelpers.cs](../code/plant3d/csharp/Plant3DDataTools/PlantHelpers.cs) and the PIDPICK method in [PidCommands.cs](../code/plant3d/csharp/Plant3DDataTools/PidCommands.cs) side by side. PIDPICK tries the P&ID part before piping; an exception in an earlier lookup may prevent fallback. Add explicit context/error handling when adapting it.
 
 ```text
 Active Plant project
@@ -138,17 +159,19 @@ For P&ID, study [PidCommands.cs](../code/plant3d/csharp/Plant3DDataTools/PidComm
 
 | Stage | Existing starting point | Exercise and acceptance condition |
 |---|---|---|
-| Inspect | `P3DDUMP` | Select a pipe and compare printed values with Data Manager |
-| Discover schema | `P3DTABLES` | Identify the classes/properties actually present in your test project |
+| Inspect | `PIDPICK` | In a matching project context, inspect a linked object and compare values with Data Manager; review the sample's fallback limitations |
+| Discover schema | `P3DTABLES`, `P3DDUMP` | List tables, then export a chosen table and inspect its columns; these use project data |
 | Report | `P3DLINELIST` | Export and reconcile row count and line tags with the project |
 | Materials | `P3DMTO` | Check sample quantities against a small, manually counted model |
 | P&ID | `PIDPICK`, `PIDTAGS` | Check tag uniqueness and missing values in a test drawing |
-| Edit | `P3DSETPROPS` | Preview a small proposed change, apply it to a test object, reopen and verify |
+| Edit | `P3DSETPROPS` | Study the existing CSV bulk writer; implement validation and a preview before using it as an editing exercise, then save/reopen and verify |
 | Team tool | Command wrapper, then UI | A colleague can install, run and diagnose the tool from its instructions |
 
 A line list and an MTO represent different things: a line can contain many components. Define scope, grouping and units before presenting an export as an engineering deliverable.
 
 ## 8. Handle changes, document context and UI deliberately
+
+The existing P3DSETPROPS command reads a CSV containing PnPID,Property,Value; it does not ask you to pick objects or preview changes. Its simple comma splitting is not a full quoted-CSV parser. Those improvements are exercises, not current capabilities.
 
 For property-writing exercises, discover the real property names, check whether values are writable, validate inputs, and show the old and proposed values first. Use the supported Plant data-link APIs rather than direct SQL changes to project files. Keep a test project backup and an explicit record of successful and failed updates.
 
@@ -202,7 +225,7 @@ Common diagnoses:
 ## 11. Suggested practice sequence
 
 1. Explain each line of the P3DHELLO exercise, then build and run it.
-2. Trace P3DDUMP from selection through row lookup to property output.
+2. Trace PIDPICK from selection through row lookup to property output; separately trace P3DDUMP from a table name to a CSV export.
 3. Add a read-only check for a missing property using a name discovered in your test project.
 4. Create a report whose counts you can verify manually.
 5. Design a change preview before adding any write operation.

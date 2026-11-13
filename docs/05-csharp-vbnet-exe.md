@@ -1,5 +1,17 @@
 # 05 — C# and VB.NET standalone EXEs for Inventor
 
+## Add-in learning levels
+
+### Beginner — learn C# without the Inventor dependency
+Complete workbook [B3–B5](19-addin-learning-from-zero.md) first: variables, conditions, loops, a function and a deliberate error. Explain every line aloud. This chapter's examples control Inventor; Plant learners can use the language explanations without completing its COM connection setup.
+
+### Transition — move logic into a command
+Take a small rule such as “is this tag text empty?” and explain its input and return value. In a Plant add-in, a command obtains real text from the API and calls that rule. Console.WriteLine becomes host editor output where appropriate; the Plant command is registered with CommandMethod. **Checkpoint:** distinguish ordinary C# validation from Inventor-specific or Plant-specific API calls.
+
+### Intermediate — separate data access from processing
+Write small methods for validating copied values and formatting results. Check those methods with empty text, whitespace, valid text and unexpected punctuation before reading real project data. **Exercise:** why not put Plant API calls in the console rule? **Answer:** doing so couples a simple testable rule to a running host and project. Continue with [chapter 18](18-plant3d-addin-development.md) for the actual Plant library project.
+
+
 An EXE is your own program that **drives** Inventor over COM. It is the best way to learn C# with
 Inventor: full debugger, fast edit-run cycle, no Inventor restart.
 

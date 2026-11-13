@@ -1,5 +1,17 @@
 # 13 — Errors and fixes (Inventor, AutoCAD, Plant 3D)
 
+## Add-in learning levels
+
+### Beginner — identify when it failed
+Use three questions: did it fail while building, while loading the DLL, or after typing the command? Write down the exact first error and the action that caused it. Work through [workbook B5](19-addin-learning-from-zero.md). **Checkpoint:** fix a deliberate missing semicolon and explain why rebuilding was necessary.
+
+### Transition — inspect rather than guess
+Set a breakpoint before the failing operation, run the command and inspect the document, project, selection status or property value. Change one thing and repeat the same steps. **Exercise:** a greeting still shows old text after editing source. **Suggested diagnosis:** check whether you rebuilt, loaded the intended DLL and restarted the host. Do not assume the new code actually ran.
+
+### Intermediate — reproduce and report
+Reduce a failure to the smallest test drawing and command sequence. Record host/update, build target, exception type/message, failing method and expected versus actual result. Distinguish “no findings” from “inspection failed.” **Checkpoint:** someone else can reproduce the issue from your notes without receiving a production project. Catch exceptions where useful context can be added, rather than hiding them with a success message.
+
+
 Organised by **where** the error shows up. Each row: message (or symptom) → cause → fix. Many rows
 come from building this repo; they are marked ★.
 

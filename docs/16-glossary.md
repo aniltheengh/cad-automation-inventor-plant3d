@@ -1,5 +1,52 @@
 # 16 — Glossary (English / 日本語)
 
+## Add-in vocabulary by learning level
+
+Use [chapter 19](19-addin-learning-from-zero.md) for examples and exercises. You do not need to memorize the whole glossary first.
+
+### Beginner — words used in the first lesson
+
+| Word | Meaning in this course |
+|---|---|
+| Variable | A named place for a value, such as tag text |
+| Type | The kind of value, such as text, whole number or true/false |
+| Condition | A test that decides what the code does next |
+| Loop | Instructions repeated for several values |
+| Function / method | A named operation; a method belongs to a type |
+| Build | Translate/check source code to produce program output |
+| Host | The application that loads and runs your add-in |
+
+**Checkpoint:** identify a variable, condition and loop in workbook B4.
+
+### Transition — words used when entering CAD
+
+| Word | Meaning in this course |
+|---|---|
+| Class | A type grouping related data and operations |
+| Instance / object | A particular value created from or represented by a type |
+| Attribute | Metadata in square brackets, such as CommandMethod |
+| Interface | A contract of members a class implements |
+| Null | No object/value reference available |
+| Exception | A reported failure during execution |
+| Transaction | A controlled lifetime for drawing database access |
+
+**Checkpoint:** explain why a missing document must be checked before using its editor.
+
+### Intermediate — words used when sharing a tool
+
+| Word | Meaning in this course |
+|---|---|
+| Scope | Exactly which objects, drawing or project a job covers |
+| Schema | The structure of data: classes, columns and relationships |
+| Validation | Checking data against a stated rule |
+| Dependency | Another library or component your tool needs |
+| Manifest | A file describing how a host finds/loads an extension |
+| Regression | Previously working behavior broken by a change |
+| Modeless UI | A window/palette that stays open while the user works elsewhere |
+
+**Checkpoint:** describe a report's scope and validation rule without referring to code.
+
+
 Japanese terms are the usual ones in the Japanese UI / Japanese Autodesk documentation; check your UI
 where they differ.
 
@@ -11,7 +58,7 @@ where they differ.
 | COM | COM | Microsoft's component technology; Inventor's API and AutoCAD's ActiveX use it |
 | Interop assembly | 相互運用アセンブリ | .NET DLL describing a COM API (`Autodesk.Inventor.Interop.dll`) |
 | In-process / out-of-process | インプロセス / アウトプロセス | code inside the CAD program vs. a separate program |
-| Add-in | アドイン | DLL loaded by Inventor at start-up (`.addin` manifest) |
+| Add-in | アドイン | Extension loaded by a host application; Inventor and Plant/AutoCAD use different entry points and loading mechanisms |
 | Plug-in | プラグイン | AutoCAD term for a loaded DLL/LISP; DA term for a cloud add-in |
 | Registry-free | レジストリフリー | add-in found via `.addin` XML, no registry entries (mandatory since Inventor 2024) |
 | `.addin` manifest | .addin マニフェスト | XML telling Inventor which DLL/class to load |

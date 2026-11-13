@@ -1,5 +1,19 @@
 # 00 — Getting started: install, versions, first build
 
+## Add-in learning levels
+
+Start with [the from-zero workbook](19-addin-learning-from-zero.md). Treat the machine/version tables below as the repository's recorded setup, not an inspection of your computer.
+
+### Beginner — identify the tools
+Your first task is to locate Visual Studio, your Plant 3D installation and the downloaded repository. Write down the product/update shown in Plant's About dialog. Find a .cs source file and a .csproj project file. Read workbook B1–B2 before changing SDK paths. **Checkpoint:** explain which program edits code and which program runs the add-in.
+
+### Transition — build one project
+Open Plant3DDataTools.csproj, resolve references for your actual host using [chapter 18](18-plant3d-addin-development.md), and build just that project. Find its DLL in the build output and record its full path. **Checkpoint:** distinguish a compiler error from a DLL-loading error. You do not need to build every Inventor project to begin Plant development.
+
+### Intermediate — make setup reproducible
+Record the tested product/update, target framework, reference locations and build command. Repeat the build and NETLOAD in a fresh Plant session. **Exercise:** explain what another learner would have to change on a different computer. **Answer:** machine paths and possibly host/SDK versions, not arbitrary source-code changes.
+
+
 > Goal of this page: in one evening, go from "Inventor 2026 + Visual Studio installed" to "I built and
 > ran three different kinds of automation". Plant 3D setup (you do not have it yet) is at the end.
 

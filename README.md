@@ -4,7 +4,7 @@ A practical, engineer-to-engineer guide with **working code** for automating **A
 (iLogic, VBA, C#, VB.NET, Python, PowerShell, Apprentice, Design Automation) and **AutoCAD Plant 3D 2026**
 (AutoCAD .NET, Plant SDK, AutoLISP, scripts, Core Console, pyautocad, custom part scripts).
 
-Written for a mechanical engineer who is new to C# and Visual Studio. Bullets, tables and code, not essays.
+Written for CAD users and engineers learning programming from the beginning. The add-in track uses plain-language explanations, small actions, worked examples, exercises and readiness checks; no software engineering background is assumed.
 Companion to *pressure-vessel-fea-inventor-nastran*.
 
 > **Target setup:** Inventor 2026 · Visual Studio 2022 Community 17.14 (.NET desktop workload) · .NET SDK 9
@@ -14,7 +14,7 @@ Companion to *pressure-vessel-fea-inventor-nastran*.
 
 | | Count |
 |---|---|
-| Docs | 19 chapters (`docs/00`–`18`) |
+| Docs | 20 chapters (`docs/00`–`19`) |
 | Projects | 13 complete projects ([docs/15](docs/15-projects.md)) |
 | C# / VB.NET projects | 12 (8 Inventor C#, 1 VB.NET, 1 Design Automation, 1 AutoCAD, 1 Plant 3D) |
 | iLogic rules | 10 |
@@ -43,6 +43,16 @@ Companion to *pressure-vessel-fea-inventor-nastran*.
 Full comparison and decision tree: [docs/01](docs/01-choosing-a-language.md).
 
 ## Plant 3D add-in development — C# and Plant 3D API
+
+**New to programming? Start with [Chapter 19 — Add-in development from zero](docs/19-addin-learning-from-zero.md).**
+
+| Stage | Focus | Result |
+|---|---|---|
+| Beginner | Vocabulary, files, simple C#, building and loading | Understand and change your first command |
+| Transition | Command flow, debugging, selection and Plant properties | Adapt a read-only example with understanding |
+| Intermediate | Validation, reports, error handling, UI and packaging | Build and verify a small useful tool |
+
+Related setup, C#, Inventor add-in, AutoCAD, Plant API, troubleshooting, deployment, project and glossary chapters each include the same three-stage progression. The Plant track does not require completing the Inventor or other-language tracks first.
 
 A separate track for building add-ins that run inside Plant 3D:
 
@@ -90,6 +100,7 @@ Start with a read-only command in a disposable project. Match the SDK and .NET t
 | 16 | [Glossary (English / 日本語)](docs/16-glossary.md) |
 | 17 | [References](docs/17-references.md) |
 | 18 | [Plant 3D add-in development: C#, Plant API, commands, debugging and deployment](docs/18-plant3d-addin-development.md) |
+| 19 | [Add-in development from zero: beginner, transition and intermediate workbook](docs/19-addin-learning-from-zero.md) |
 
 Code map: [code/README.md](code/README.md) · Checks: [tools/README.md](tools/README.md)
 
