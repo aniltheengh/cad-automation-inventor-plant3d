@@ -21,3 +21,7 @@
 plain AutoCAD they fail at `CurrentProject` — by design.
 
 See [docs/11-plant3d-sdk.md](../../../../docs/11-plant3d-sdk.md).
+
+## Learn add-in development
+
+Follow [Chapter 18 — Plant 3D add-in development with C#](../../../../docs/18-plant3d-addin-development.md) for a separate step-by-step path through setup, a first command, lifecycle hooks, debugging, Plant project data and deployment. Match references and the target framework to your installed product/update before building.

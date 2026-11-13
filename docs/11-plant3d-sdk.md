@@ -1,5 +1,7 @@
 # 11 — AutoCAD Plant 3D: SDK, project data, piping, P&ID, specs, Isogen, custom parts
 
+**Dedicated add-in track:** [Chapter 18 — Plant 3D add-in development with C#](18-plant3d-addin-development.md) covers commands, lifecycle, debugging and deployment. Read its version-matching guidance before using the original .NET 8 setup below.
+
 > **Honesty first.** The Plant 3D API is real and powerful, but its public documentation is **thin**.
 > The SDK help (`.chm`) lists classes with little explanation; the best learning material is the ADN
 > *Plant3DTraining* labs (written for Plant 3D 2011–2015 and still valid in structure), forum threads and

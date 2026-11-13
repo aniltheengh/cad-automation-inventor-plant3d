@@ -14,7 +14,7 @@ Companion to *pressure-vessel-fea-inventor-nastran*.
 
 | | Count |
 |---|---|
-| Docs | 18 chapters (`docs/00`–`17`) |
+| Docs | 19 chapters (`docs/00`–`18`) |
 | Projects | 13 complete projects ([docs/15](docs/15-projects.md)) |
 | C# / VB.NET projects | 12 (8 Inventor C#, 1 VB.NET, 1 Design Automation, 1 AutoCAD, 1 Plant 3D) |
 | iLogic rules | 10 |
@@ -41,6 +41,16 @@ Companion to *pressure-vessel-fea-inventor-nastran*.
 | Visual programming for Plant 3D | **Dynamo is not available** | .NET + Python | [11](docs/11-plant3d-sdk.md#dynamo-for-plant-3d-not-available) |
 
 Full comparison and decision tree: [docs/01](docs/01-choosing-a-language.md).
+
+## Plant 3D add-in development — C# and Plant 3D API
+
+A separate track for building add-ins that run inside Plant 3D:
+
+- **[Chapter 18: Plant 3D add-in development with C#](docs/18-plant3d-addin-development.md)** — environment and SDK versions, first command, lifecycle, loading/debugging, project data, UI, deployment and verification.
+- **[Plant3DDataTools examples](code/plant3d/csharp/Plant3DDataTools/README.md)** — inspect properties, export line lists/MTO, work with P&ID tags and explore property updates.
+- **[Plant SDK reference](docs/11-plant3d-sdk.md)** — project parts, DataLinksManager, database rows and relationships.
+
+Start with a read-only command in a disposable project. Match the SDK and .NET target to the installed Plant 3D build; the new chapter explains the runtime/update distinction.
 
 ## Learning path (beginner)
 
@@ -79,6 +89,7 @@ Full comparison and decision tree: [docs/01](docs/01-choosing-a-language.md).
 | 15 | [Projects (13) with exercises](docs/15-projects.md) |
 | 16 | [Glossary (English / 日本語)](docs/16-glossary.md) |
 | 17 | [References](docs/17-references.md) |
+| 18 | [Plant 3D add-in development: C#, Plant API, commands, debugging and deployment](docs/18-plant3d-addin-development.md) |
 
 Code map: [code/README.md](code/README.md) · Checks: [tools/README.md](tools/README.md)
 
