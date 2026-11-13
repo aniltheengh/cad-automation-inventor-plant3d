@@ -10,6 +10,15 @@ Companion to *pressure-vessel-fea-inventor-nastran*.
 > **Target setup:** Inventor 2026 · Visual Studio 2022 Community 17.14 (.NET desktop workload) · .NET SDK 9
 > (builds .NET 8 targets) · Anaconda Python · Plant 3D via trial/education/company licence ([how](docs/00-getting-started.md#getting-autocad-plant-3d)).
 
+## AutoCAD Plant 3D SDK guide (what, how, samples)
+
+A standalone, beginner-friendly Plant 3D SDK folder is in this repo:
+
+- **[plant3d-sdk/README.md](plant3d-sdk/README.md)** — what the Plant SDK is, what you can automate (piping, P&ID, Data Manager, specs, isos/ortho), version notes for Plant 3D 2026 (.NET 8, and .NET 10 from 2026 Update 1.2), download and install paths, Visual Studio setup, NETLOAD and autoloader (`PackageContents.xml`), troubleshooting, and official Autodesk links.
+- **[plant3d-sdk/samples/](plant3d-sdk/samples/)** — a sample .NET 8 class library with C# commands: list the project, read/write properties, walk pipe ports and connections, walk a P&ID line group, export properties to CSV, and list parts in a spec.
+
+Longer learning chapters that were already here: [docs/11](docs/11-plant3d-sdk.md), [docs/18](docs/18-plant3d-addin-development.md), [code/plant3d](code/plant3d/).
+
 ## Mechanics of Materials / Strength of Materials — I and II
 
 **[Open the separate mechanics learning section](mechanics-of-materials/README.md)** — no programming required.

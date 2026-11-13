@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Autoloader manifest for Plant 3D 2026 (release number 25.1).
+  Copy this file to:
+    %APPDATA%\Autodesk\ApplicationPlugins\Plant3dSdkSamples.bundle\PackageContents.xml
+  and copy the built DLL (+ .deps.json if present) to:
+    ...\Plant3dSdkSamples.bundle\Contents\
+
+  If you reuse this file, generate a new ProductCode GUID.
+  For Plant 3D 2025 only, change SeriesMin and SeriesMax to R25.0.
+  Platform="Plant3D" is the value used in Autodesk Community Plant 3D examples.
+  Format reference:
+  https://help.autodesk.com/cloudhelp/2026/ENU/AutoCAD-Customization/files/GUID-BC76355D-682B-46ED-B9B7-66C95EEF2BD0.htm
+-->
+<ApplicationPackage SchemaVersion="1.0"
+                    AppVersion="1.0.0"
+                    ProductCode="{8E7C2A41-3B0F-4D6A-9F11-6C1E2B8A4D77}"
+                    Name="Plant3dSdkSamples"
+                    Description="Sample AutoCAD Plant 3D SDK commands"
+                    Author="aniltheengh">
+  <CompanyDetails Name="aniltheengh" />
+  <Components Description="Plant 3D SDK samples">
+    <RuntimeRequirements OS="Win64"
+                         Platform="Plant3D"
+                         SeriesMin="R25.1"
+                         SeriesMax="R25.1" />
+    <ComponentEntry AppName="Plant3dSdkSamples"
+                    AppType=".NET"
+                    Version="1.0.0"
+                    ModuleName="./Contents/Plant3dSdkSamples.dll"
+                    AppDescription="Sample Plant 3D SDK commands"
+                    LoadOnAutoCADStartup="False"
+                    LoadOnCommandInvocation="True">
+      <Commands GroupName="Plant3dSdkSamples">
+        <Command Local="P3DPROJECT" Global="P3DPROJECT" />
+        <Command Local="P3DSETTINGS" Global="P3DSETTINGS" />
+        <Command Local="P3DPROPS" Global="P3DPROPS" />
+        <Command Local="P3DSETPROP" Global="P3DSETPROP" />
+        <Command Local="P3DPIPEWALK" Global="P3DPIPEWALK" />
+        <Command Local="P3DLINEGROUP" Global="P3DLINEGROUP" />
+        <Command Local="P3DEXPORTCSV" Global="P3DEXPORTCSV" />
+        <Command Local="P3DSPECLIST" Global="P3DSPECLIST" />
+      </Commands>
+    </ComponentEntry>
+  </Components>
+</ApplicationPackage>

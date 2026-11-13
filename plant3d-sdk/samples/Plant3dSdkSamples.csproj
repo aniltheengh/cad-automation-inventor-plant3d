@@ -1,0 +1,88 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <PlatformTarget>x64</PlatformTarget>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Plant3dSdkSamples</RootNamespace>
+    <AssemblyName>Plant3dSdkSamples</AssemblyName>
+    <UseWindowsForms>true</UseWindowsForms>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.WindowsDesktop.App" />
+  </ItemGroup>
+
+  <!--
+    AutoCAD managed API.
+    Alternative: NuGet AutoCAD.NET 25.1.0 with ExcludeAssets="runtime"
+    (official package for AutoCAD 2026 / .NET 8).
+    Copy Local / Private must stay false so Plant 3D loads its own copies.
+  -->
+  <ItemGroup>
+    <Reference Include="accoremgd">
+      <HintPath>$(AcadDir)\accoremgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="acdbmgd">
+      <HintPath>$(AcadDir)\acdbmgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="acmgd">
+      <HintPath>$(AcadDir)\acmgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!--
+    Plant 3D SDK / product DLLs.
+    Prefer $(PlantSdkInc) when the file exists there; otherwise use $(PlantDir) or $(AcadDir).
+    If a HintPath fails, search those three folders in Explorer and fix the path.
+  -->
+  <ItemGroup>
+    <Reference Include="PnPProjectManagerMgd">
+      <HintPath>$(PlantSdkInc)\PnPProjectManagerMgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="PnPDataLinks">
+      <HintPath>$(PlantSdkInc)\PnPDataLinks.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="PnPDataObjects">
+      <HintPath>$(PlantSdkInc)\PnPDataObjects.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="PnP3dProjectPartsMgd">
+      <HintPath>$(PlantSdkInc)\PnP3dProjectPartsMgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="PnP3dObjectsMgd">
+      <HintPath>$(PlantSdkInc)\PnP3dObjectsMgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="PnIdProjectPartsMgd">
+      <HintPath>$(AcadDir)\PnIdProjectPartsMgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="PnIDMgd">
+      <HintPath>$(PlantSdkInc)\PnIDMgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="PnPCommonDbxMgd">
+      <HintPath>$(PlantSdkInc)\PnPCommonDbxMgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="PnPCommonMgd">
+      <HintPath>$(PlantSdkInc)\PnPCommonMgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- Confirm this filename in your Inc-x64 or PLNT3D folder before building Commands_Specs.cs -->
+    <Reference Include="PnP3dPartsRepository">
+      <HintPath>$(PlantSdkInc)\PnP3dPartsRepository.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+</Project>

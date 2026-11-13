@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Edit these paths to match YOUR machine before building.
+  Typical locations (confirm in Explorer):
+    AcadDir:      C:\Program Files\Autodesk\AutoCAD 2026
+    PlantSdkInc:  C:\Program Files\Autodesk\AutoCAD Plant 3D 2026 SDK\Inc-x64
+                  or the Inc-x64 folder of the unzipped Plant SDK
+    PlantDir:     C:\Program Files\Autodesk\AutoCAD 2026\PLNT3D
+  PnIdProjectPartsMgd.dll is sometimes only next to acad.exe, not in the SDK.
+-->
+<Project>
+  <PropertyGroup>
+    <AcadDir Condition="'$(AcadDir)' == ''">C:\Program Files\Autodesk\AutoCAD 2026</AcadDir>
+    <PlantDir Condition="'$(PlantDir)' == ''">$(AcadDir)\PLNT3D</PlantDir>
+    <PlantSdkInc Condition="'$(PlantSdkInc)' == ''">C:\Program Files\Autodesk\AutoCAD Plant 3D 2026 SDK\Inc-x64</PlantSdkInc>
+  </PropertyGroup>
+</Project>
