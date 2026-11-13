@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Autoloader manifest for Plant3DAddinStarter (docs/11b-plant3d-first-addin.md, step 8).
+  Folder layout after  dotnet build -c Release -p:DeployBundle=true :
+
+    %APPDATA%\Autodesk\ApplicationPlugins\Plant3DAddinStarter.bundle\
+      PackageContents.xml              <- this file
+      Contents\Plant3DAddinStarter.dll
+
+  Platform="Plant3D"      : load in AutoCAD Plant 3D only (plain AutoCAD ignores the bundle)
+  SeriesMin / SeriesMax   : R25.0 = 2025, R25.1 = 2026  (both .NET 8). 2027 = R26.0 needs its own .NET 10 build.
+  ProductCode/UpgradeCode : any GUIDs; make new ones for your own add-in (Visual Studio: Tools > Create GUID).
+-->
+<ApplicationPackage SchemaVersion="1.0"
+                    AutodeskProduct="AutoCAD"
+                    ProductType="Application"
+                    Name="Plant3DAddinStarter"
+                    Description="Plant 3D add-in starter: read-only sample commands"
+                    AppVersion="1.0.0"
+                    ProductCode="{FB7BF1A8-981B-4976-9B14-485876BFC78E}"
+                    UpgradeCode="{AC7CE367-0E57-44D8-B338-2314B5EDD75E}">
+  <CompanyDetails Name="cad-automation-inventor-plant3d" />
+  <Components Description="Plant 3D 2025 and 2026 (.NET 8)">
+    <RuntimeRequirements OS="Win64" Platform="Plant3D" SeriesMin="R25.0" SeriesMax="R25.1" />
+    <ComponentEntry AppName="Plant3DAddinStarter"
+                    Version="1.0.0"
+                    ModuleName="./Contents/Plant3DAddinStarter.dll"
+                    AppDescription="Plant 3D add-in starter"
+                    LoadOnAutoCADStartup="True">
+      <Commands GroupName="P3DSTARTER">
+        <Command Global="P3DHELLO" Local="P3DHELLO" />
+        <Command Global="P3DCOMPONENTS" Local="P3DCOMPONENTS" />
+        <Command Global="P3DINSPECT" Local="P3DINSPECT" />
+        <Command Global="P3DWALK" Local="P3DWALK" />
+        <Command Global="P3DAPIMAP" Local="P3DAPIMAP" />
+        <Command Global="P3DREGISTER" Local="P3DREGISTER" />
+        <Command Global="P3DUNREGISTER" Local="P3DUNREGISTER" />
+      </Commands>
+    </ComponentEntry>
+  </Components>
+</ApplicationPackage>

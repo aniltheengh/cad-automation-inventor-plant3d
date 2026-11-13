@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Plant3DAddinStarter - a first AutoCAD Plant 3D add-in (class library, .NET 8; 2027: -p:AcadRelease=2027).
+    Step-by-step guide : docs/11b-plant3d-first-addin.md
+    The code explained : docs/11c-plant3d-code-examples.md
+    Target framework, x64 and the Plant SDK path come from code/plant3d/Directory.Build.props.
+
+    Real build   : set PlantSdkInc (one folder with the Plant DLLs), then   dotnet build
+    Syntax check : dotnet build -p:PlantStubs=true      (tools/plant-sdk-stubs - never ship or deploy that build)
+    Deploy       : dotnet build -c Release -p:DeployBundle=true
+                   copies the DLL + PackageContents.xml to
+                   %APPDATA%\Autodesk\ApplicationPlugins\Plant3DAddinStarter.bundle  (per user, no admin rights)
+  -->
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Plant3DAddinStarter</AssemblyName>
+    <RootNamespace>Plant3DAddinStarter</RootNamespace>
+    <BundleDir>$(APPDATA)\Autodesk\ApplicationPlugins\Plant3DAddinStarter.bundle</BundleDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- AutoCAD references: compile against them, never copy them next to the add-in -->
+    <PackageReference Include="AutoCAD.NET" Version="$(AcadNuGetVersion)" ExcludeAssets="runtime" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(PlantStubs)'!='true'">
+    <!-- Copy Local = False (Private=false) for ALL of these: Plant 3D loads its own copies -->
+    <Reference Include="PnPProjectManagerMgd"><HintPath>$(PlantSdkInc)\PnPProjectManagerMgd.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="PnPDataLinks"><HintPath>$(PlantSdkInc)\PnPDataLinks.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="PnPDataObjects"><HintPath>$(PlantSdkInc)\PnPDataObjects.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="PnP3dObjectsMgd"><HintPath>$(PlantSdkInc)\PnP3dObjectsMgd.dll</HintPath><Private>false</Private></Reference>
+    <!-- No "using" needs this one, but the table/column collections derive from a class in it (else: CS0012) -->
+    <Reference Include="PnPCommonMgd"><HintPath>$(PlantSdkInc)\PnPCommonMgd.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(PlantStubs)'=='true'">
+    <ProjectReference Include="..\..\..\..\tools\plant-sdk-stubs\PlantSdkStubs.csproj" />
+  </ItemGroup>
+
+  <!-- Opt-in deployment as an Autoloader bundle (Windows only; a stub build is never deployed) -->
+  <Target Name="DeployBundle" AfterTargets="Build"
+          Condition="'$(DeployBundle)'=='true' And '$(PlantStubs)'!='true' And '$(OS)'=='Windows_NT'">
+    <Copy SourceFiles="bundle\PackageContents.xml" DestinationFolder="$(BundleDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(BundleDir)\Contents" SkipUnchangedFiles="true" />
+    <Message Importance="high" Text="Bundle deployed to $(BundleDir) - restart Plant 3D to load it." />
+  </Target>
+</Project>

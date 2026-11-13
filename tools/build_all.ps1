@@ -14,7 +14,11 @@ foreach ($p in $projects) {
   if ($LASTEXITCODE) { $fail = 1 }
 }
 $plantArgs = if ($PlantSdkInc) { "-p:PlantSdkInc=$PlantSdkInc" } else { "-p:PlantStubs=true" }
-dotnet build code\plant3d\csharp\Plant3DDataTools -nologo -v q $plantArgs; if ($LASTEXITCODE) { $fail = 1 }
+foreach ($p in Get-ChildItem code\plant3d\csharp\* -Directory) {
+  "== $($p.Name)"
+  dotnet build $p.FullName -nologo -v q $plantArgs
+  if ($LASTEXITCODE) { $fail = 1 }
+}
 python tools\check_ilogic.py --inventor-bin $InventorBin; if ($LASTEXITCODE) { $fail = 1 }
 python tools\test_tools.py; if ($LASTEXITCODE) { $fail = 1 }
 python tools\lisp_check.py; if ($LASTEXITCODE) { $fail = 1 }

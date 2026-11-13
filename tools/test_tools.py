@@ -97,6 +97,9 @@ tmp.unlink()
 for rel in ["code/inventor/csharp/07-MyFirstAddin/MyFirstAddin.addin",
             "code/inventor/csharp/07-MyFirstAddin/StandardAddInServer.cs",
             "code/plant3d/csharp/Plant3DDataTools/PipingCommands.cs",
+            "code/plant3d/csharp/Plant3DAddinStarter/PlantAddin.cs",
+            "code/plant3d/csharp/Plant3DAddinStarter/bundle/PackageContents.xml",
+            "code/plant3d/csharp/Plant3DAddinStarter/Properties/launchSettings.json",
             "code/inventor/design-automation/GearDAPlugin/bundle/PackageContents.xml"]:
     check("exists " + rel, (ROOT / rel).exists())
 
@@ -106,6 +109,35 @@ addin = (ROOT / "code/inventor/csharp/07-MyFirstAddin/MyFirstAddin.addin").read_
 srv = (ROOT / "code/inventor/csharp/07-MyFirstAddin/StandardAddInServer.cs").read_text()
 gid = re.search(r"<ClassId>\{([0-9A-F-]+)\}</ClassId>", addin).group(1)
 check("add-in ClassId matches [Guid] attribute", f'[Guid("{gid}")]' in srv and f"{{{gid}}}" in srv)
+
+# --- Plant3DAddinStarter: commands in the code == commands in the bundle == commands in the docs --------
+starter = ROOT / "code/plant3d/csharp/Plant3DAddinStarter"
+in_code = set()
+for cs in starter.glob("*.cs"):
+    in_code |= set(re.findall(r'\[CommandMethod\("([A-Z0-9]+)"', cs.read_text(encoding="utf-8")))
+bundle = (starter / "bundle/PackageContents.xml").read_text(encoding="utf-8")
+in_bundle = set(re.findall(r'<Command Global="([A-Z0-9]+)"', bundle))
+check("starter add-in has commands", len(in_code) >= 5, str(in_code))
+check("bundle command list matches [CommandMethod] names", in_code == in_bundle, f"{sorted(in_code ^ in_bundle)}")
+check("bundle is restricted to Plant 3D", 'Platform="Plant3D"' in bundle)
+check("bundle module name matches the assembly name",
+      "./Contents/Plant3DAddinStarter.dll" in bundle
+      and "<AssemblyName>Plant3DAddinStarter</AssemblyName>" in (starter / "Plant3DAddinStarter.csproj").read_text(encoding="utf-8"))
+for doc in ["docs/11c-plant3d-code-examples.md", "code/plant3d/csharp/Plant3DAddinStarter/README.md"]:
+    text = (ROOT / doc).read_text(encoding="utf-8") if (ROOT / doc).exists() else ""
+    missing = sorted(c for c in in_code if c not in text)
+    check(f"every starter command is described in {doc}", not missing, str(missing))
+# docs/11c quotes the starter: every line of a block marked <!-- excerpt: File.cs --> must exist in that file
+doc11c = (ROOT / "docs/11c-plant3d-code-examples.md").read_text(encoding="utf-8")
+excerpts = re.findall(r"<!-- excerpt: ([\w.]+) -->\n.*?```csharp\n(.*?)```", doc11c, flags=re.S)
+stale = []
+for file, block in excerpts:
+    src = {l.strip() for l in (starter / file).read_text(encoding="utf-8").splitlines()}
+    stale += [f"{file}: {l.strip()}" for l in block.splitlines() if l.strip() not in ("", "// ...") and l.strip() not in src]
+check("docs/11c has code excerpts", len(excerpts) >= 10, str(len(excerpts)))
+check("docs/11c excerpts match the starter source", not stale, "; ".join(stale[:3]))
+json.loads((starter / "Properties/launchSettings.json").read_text(encoding="utf-8"))
+check("launchSettings.json is valid JSON", True)
 
 print(f"\n{passed} passed, {failed} failed")
 sys.exit(1 if failed else 0)

@@ -14,9 +14,9 @@ Companion to *pressure-vessel-fea-inventor-nastran*.
 
 | | Count |
 |---|---|
-| Docs | 20 chapters (`docs/00`–`19`) |
-| Projects | 13 complete projects ([docs/15](docs/15-projects.md)) |
-| C# / VB.NET projects | 12 (8 Inventor C#, 1 VB.NET, 1 Design Automation, 1 AutoCAD, 1 Plant 3D) |
+| Docs | 23 chapters (`docs/00`–`19`, plus `11a`–`11c` on the Plant 3D .NET API) |
+| Projects | 14 complete projects ([docs/15](docs/15-projects.md)) |
+| C# / VB.NET projects | 13 (8 Inventor C#, 1 VB.NET, 1 Design Automation, 1 AutoCAD, 2 Plant 3D) |
 | iLogic rules | 10 |
 | Python scripts | 10 (pywin32, pyautocad, openpyxl, Plant 3D custom part) |
 | Other | 3 VBA modules, 3 PowerShell scripts (+2 in tools), 2 AutoLISP files, 2 `.scr` + `.bat` |
@@ -34,7 +34,7 @@ Companion to *pressure-vessel-fea-inventor-nastran*.
 | Admin script on a locked-down PC | **PowerShell** | Python | [07](docs/07-python-powershell.md#powershell) |
 | iProperties of 10 000 files, no Inventor seat | **Apprentice** | — | [08](docs/08-apprentice-design-automation-vault.md#apprentice-server) |
 | Web configurator, no Inventor seats | **Design Automation (APS)** | — | [08](docs/08-apprentice-design-automation-vault.md#design-automation-for-inventor-aps) |
-| Plant 3D properties, line list, MTO, P&ID tags | **Plant SDK (.NET)** | Report Creator (no code) | [11](docs/11-plant3d-sdk.md) |
+| Plant 3D properties, line list, MTO, P&ID tags | **Plant SDK (.NET)** | Report Creator (no code) | [11](docs/11-plant3d-sdk.md), [11a–c](docs/11a-plant3d-api-architecture.md) |
 | Title blocks, layers, attributes on DWGs | **AutoLISP / AutoCAD .NET** | pyautocad | [10](docs/10-autocad-dotnet-basics.md), [12](docs/12-autolisp-scripts-coreconsole-python.md) |
 | Same job on 500 DWGs unattended | **Core Console + .scr** | ScriptPro | [12](docs/12-autolisp-scripts-coreconsole-python.md#core-console) |
 | New Plant 3D catalogue part geometry | **Python custom part script** | blocks | [11](docs/11-plant3d-sdk.md#custom-part-scripts-python-inside-plant-3d) |
@@ -59,6 +59,7 @@ A separate track for building add-ins that run inside Plant 3D:
 - **[Chapter 18: Plant 3D add-in development with C#](docs/18-plant3d-addin-development.md)** — environment and SDK versions, first command, lifecycle, loading/debugging, project data, UI, deployment and verification.
 - **[Plant3DDataTools examples](code/plant3d/csharp/Plant3DDataTools/README.md)** — inspect properties, export line lists/MTO, work with P&ID tags and explore property updates.
 - **[Plant SDK reference](docs/11-plant3d-sdk.md)** — project parts, DataLinksManager, database rows and relationships.
+- **[Plant 3D .NET API: architecture (11a)](docs/11a-plant3d-api-architecture.md), [first add-in step by step (11b)](docs/11b-plant3d-first-addin.md), [code examples (11c)](docs/11c-plant3d-code-examples.md)** — class hierarchy and namespaces, `IExtensionApplication`, registering the DLL, iterating components and extracting properties; working code in [Plant3DAddinStarter](code/plant3d/csharp/Plant3DAddinStarter/README.md).
 
 Start with a read-only command in a disposable project. Match the SDK and .NET target to the installed Plant 3D build; the new chapter explains the runtime/update distinction.
 
@@ -72,7 +73,8 @@ Start with a read-only command in a disposable project. Match the SDK and .NET t
 | 4 | Batch export and Excel round trips | 09, 07 | `03-BatchExport`, `04-IPropertyBulkEditor`, `python/` |
 | 5 | Your own ribbon button | 06 | `07-MyFirstAddin` |
 | 6 | AutoCAD .NET + LISP + Core Console (plain AutoCAD is enough) | 10, 12 | `autocad/AttributeTools`, `plant3d/autolisp` |
-| 7 | Plant 3D trial: SDK, line list, MTO, custom part | 11 | `plant3d/csharp/Plant3DDataTools`, `custom-part-scripts` |
+| 7 | Plant 3D trial: API map, first add-in, components and properties | 11a, 11b, 11c | `plant3d/csharp/Plant3DAddinStarter` |
+| 7b | Plant 3D: line list, MTO, custom part | 11 | `plant3d/csharp/Plant3DDataTools`, `custom-part-scripts` |
 | 8 | Cloud: Design Automation | 08 | `design-automation/GearDAPlugin` |
 | always | When stuck | 13 | — |
 | before sharing | Version control, tests, deployment | 14 | `tools/` |
@@ -93,10 +95,13 @@ Start with a read-only command in a disposable project. Match the SDK and .NET t
 | 09 | [Drawings, BOM, PDF/DXF/STEP export, Content Center, iParts, Excel](docs/09-drawings-bom-export.md) |
 | 10 | [AutoCAD .NET basics](docs/10-autocad-dotnet-basics.md) |
 | 11 | [Plant 3D: SDK, DataLinks, PnPDatabase, piping, P&ID, specs, Isogen, custom parts](docs/11-plant3d-sdk.md) |
+| 11a | [Plant 3D .NET API architecture: assemblies, namespaces, class hierarchy](docs/11a-plant3d-api-architecture.md) |
+| 11b | [Your first Plant 3D add-in, step by step: project, IExtensionApplication, registering the DLL](docs/11b-plant3d-first-addin.md) |
+| 11c | [Plant 3D code examples: connect, active document, components, properties](docs/11c-plant3d-code-examples.md) |
 | 12 | [AutoLISP, scripts, Core Console, pyautocad](docs/12-autolisp-scripts-coreconsole-python.md) |
 | 13 | [Errors and fixes](docs/13-errors-and-fixes.md) |
 | 14 | [Best practices: Git, testing, deployment, bundles, performance](docs/14-best-practices.md) |
-| 15 | [Projects (13) with exercises](docs/15-projects.md) |
+| 15 | [Projects (14) with exercises](docs/15-projects.md) |
 | 16 | [Glossary (English / 日本語)](docs/16-glossary.md) |
 | 17 | [References](docs/17-references.md) |
 | 18 | [Plant 3D add-in development: C#, Plant API, commands, debugging and deployment](docs/18-plant3d-addin-development.md) |
@@ -123,7 +128,9 @@ dotnet run --project code\inventor\csharp\01-HelloInventor
 - The interop on the build machine was the Inventor **2023** DLL; every member used exists there. Build
   once against your 2026 interop.
 - Plant 3D SDK code compiles against **stubs** written from Autodesk's public samples. Build against the
-  real Plant 3D 2026 SDK before use.
+  real Plant 3D 2026 SDK before use. Autodesk publishes no online Plant SDK class reference; chapters 11a–11c
+  are assembled from the ADN training labs, Autodesk articles and blog posts, and open-source code built against
+  Plant 3D 2026/2027 — each fact is tagged with its source. `P3DAPIMAP` prints the real hierarchy of your install.
 - Items marked **VERIFY** in the docs/code are not confirmed from a primary source. They are collected in
   [docs/13](docs/13-errors-and-fixes.md) and the per-project READMEs.
 - Engineering formulas (ASME, gears) are textbook forms for sizing and learning — not a substitute for the code of construction or a design review.
