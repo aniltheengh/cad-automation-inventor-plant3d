@@ -8,6 +8,14 @@ A separate engineering-learning section in this CAD automation repository. **No 
 
 **Quick access:** [All course formulas](formula-reference.md) · [Symbols and units](symbols-and-units.md) · [Textbook PDF](books/Roylance_Modules_in_Mechanics_of_Materials.pdf) · [Book credits and further reading](books/README.md).
 
+## Readable formula book
+
+**[Open the typeset formula book PDF](formula-book/Mechanics_of_Materials_Formula_Book.pdf)** · [Offline HTML version](formula-book/Mechanics_of_Materials_Formula_Book.html)
+
+The PDF has displayed equations, symbols, assumptions and worked examples across all 26 topics. Download the HTML file and open it in a browser for scalable equations without an internet connection. GitHub displays HTML source rather than running it.
+
+See [audit and validation notes](formula-audit.md) for the corrections and what was checked.
+
 ## What is included
 
 - 26 chapter notes organized into Mechanics of Materials I and II.

@@ -2,32 +2,40 @@
 
 [Section home](../README.md) · [Formula reference](../formula-reference.md) · [Symbols](../symbols-and-units.md)
 
+**Readable formula book:** [PDF](../formula-book/Mechanics_of_Materials_Formula_Book.pdf) · [Offline HTML](../formula-book/Mechanics_of_Materials_Formula_Book.html)
+
 **Course:** Mechanics of Materials II — intermediate applications.
 
 ## Physical meaning
 Thick walls develop significant radial stress and nonuniform hoop stress. Use an axisymmetric elastic model away from ends and discontinuities; the thin-wall membrane approximation may be insufficient.
 
 ## Lamé equations
-For inner radius $a$, outer radius $b$, positive internal pressure $p_i$ and external pressure $p_o$, tensile stress positive:
-$$
+For inner radius $`a`$, outer radius $`b`$, positive internal pressure $`p_i`$ and external pressure $`p_o`$, tensile stress positive:
+
+```math
 \sigma_r=C-\frac{D}{r^2},\quad
 \sigma_\theta=C+\frac{D}{r^2},
-$$
-$$
+```
+
+```math
 C=\frac{p_i a^2-p_o b^2}{b^2-a^2},\quad
 D=\frac{a^2b^2(p_i-p_o)}{b^2-a^2}.
-$$
-Check $\sigma_r(a)=-p_i$ and $\sigma_r(b)=-p_o$. For closed ends with pressure thrust carried uniformly by the cylinder wall and no additional axial force, $\sigma_z=C$. Different end constraints change axial stress.
+```
+
+Check $`\sigma_r(a)=-p_i`$ and $`\sigma_r(b)=-p_o`$. For closed ends with pressure thrust carried uniformly by the cylinder wall and no additional axial force, $`\sigma_z=C`$. Different end constraints change axial stress.
 
 Under plane stress, radial displacement is
-$$
-u(r)=\frac{(1-\nu)Cr+(1+\nu)D/r}{E}.
-$$
-For a specified nonzero axial stress, the corresponding expression becomes
-$u=[(C-\nu C-\nu\sigma_z)r+(1+\nu)D/r]/E$.
+
+```math
+u_r(r)=\frac{(1-\nu)Cr+(1+\nu)D/r}{E}.
+```
+
+For a specified **uniform** nonzero axial stress, the corresponding expression becomes
+$`u_r(r)=[((1-\nu)C-\nu\sigma_z)r+(1+\nu)D/r]/E`$.
+For the closed-end pressure-thrust case, substitute $`\sigma_z=C`$, giving $`u_r(r)=[(1-2\nu)Cr+(1+\nu)D/r]/E`$. For zero axial strain and no temperature change, $`\sigma_z=2\nu C`$ instead. These are different axial boundary conditions.
 
 ## Worked example
-$a=50$ mm, $b=100$ mm, $p_i=10$ MPa, $p_o=0$. Then $C=3.333$ MPa, $D=33333.333$ MPa·mm². At the bore, $\sigma_r=-10$ MPa and $\sigma_\theta=16.667$ MPa. At the outside, they are 0 and 6.667 MPa. Closed-end axial stress is 3.333 MPa.
+$`a=50`$ mm, $`b=100`$ mm, $`p_i=10`$ MPa, $`p_o=0`$. Then $`C=3.333`$ MPa, $`D=33333.333`$ MPa·mm². At the bore, $`\sigma_r=-10`$ MPa and $`\sigma_\theta=16.667`$ MPa. At the outside, they are 0 and 6.667 MPa. Closed-end axial stress is 3.333 MPa.
 
 ## Practice and answer
 For the same radii and internal pressure 20 MPa, all these elastic stresses double.

@@ -2,35 +2,43 @@
 
 [Section home](../README.md) · [Formula reference](../formula-reference.md) · [Symbols](../symbols-and-units.md)
 
+**Readable formula book:** [PDF](../formula-book/Mechanics_of_Materials_Formula_Book.pdf) · [Offline HTML](../formula-book/Mechanics_of_Materials_Formula_Book.html)
+
 **Course:** Mechanics of Materials II — intermediate applications.
 
 ## Physical meaning
 A slender compressed member can become unstable before the material yields. Elastic stiffness, unsupported length, end restraint and the weaker bending axis control the ideal buckling load.
 
 ## Equations
-$$
+
+```math
 P_{\rm cr}=\frac{\pi^2EI_{\min}}{(KL)^2},\quad
 r_g=\sqrt{\frac{I_{\min}}A},\quad
 \lambda=\frac{KL}{r_g},\quad
 \sigma_{\rm cr}=\frac{\pi^2E}{\lambda^2}.
-$$
-Ideal effective-length factors: pinned-pinned $K=1$; fixed-free $K=2$; fixed-fixed $K=0.5$; fixed-pinned approximately 0.699. Real frames require a restraint/stability model rather than blindly adopting these numbers.
+```
+
+Ideal effective-length factors: pinned-pinned $`K=1`$; fixed-free $`K=2`$; fixed-fixed $`K=0.5`$; fixed-pinned approximately 0.699. Real frames require a restraint/stability model rather than blindly adopting these numbers.
 
 An introductory intermediate-column approximation is Johnson's parabola:
-$$
-\sigma_{\rm cr}\approx S_y\left[1-\frac{S_y}{4\pi^2E}\lambda^2\right].
-$$
-The tangent transition to Euler is $\lambda=\sqrt{2\pi^2E/S_y}$. This is not a replacement for a governing structural design curve.
 
-For an ideal pin-ended column with load eccentricity $e$:
-$$
+```math
+\sigma_{\rm cr}\approx S_y\left[1-\frac{S_y}{4\pi^2E}\lambda^2\right].
+```
+
+The tangent transition to Euler is $`\lambda=\sqrt{2\pi^2E/S_y}`$. Use this empirical Johnson approximation only on its intended nonnegative, lower-slenderness branch $`0\le\lambda\le\sqrt{2\pi^2E/S_y}`$ with suitable material assumptions. Euler requires stress below the proportional limit, not merely below ultimate strength. Neither expression replaces a governing structural design curve.
+
+For an ideal pin-ended column with load eccentricity $`e`$:
+
+```math
 \sigma_{\max}=\frac PA\left[1+\frac{ec}{r_g^2}
 \sec\left(\frac L{2r_g}\sqrt{\frac{P}{EA}}\right)\right].
-$$
-Use the formula only within its elastic, stable, pin-ended idealization.
+```
+
+Here $`P`$ is a positive compressive load magnitude and $`e,c`$ are nonnegative distances. Use the formula only for the specified pin-ended, equal-eccentricity loading, within elasticity and $`P<P_{\rm cr}`$. Do not substitute an arbitrary effective length to represent another end/loading condition.
 
 ## Worked example
-A pinned column has $E=200000$ MPa, $I_{\min}=10^6$ mm⁴ and $L=2000$ mm. Euler gives $P_{\rm cr}=493480$ N. A fixed-free column with the same data gives one-quarter: 123370 N.
+A pinned column has $`E=200000`$ MPa, $`I_{\min}=10^6`$ mm⁴ and $`L=2000`$ mm. Euler gives $`P_{\rm cr}=493480`$ N. A fixed-free column with the same data gives one-quarter: 123370 N.
 
 ## Practice and answer
 Double the unbraced length with unchanged end conditions. **Answer:** ideal Euler load becomes one-quarter.

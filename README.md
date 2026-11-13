@@ -24,6 +24,7 @@ Longer learning chapters that were already here: [docs/11](docs/11-plant3d-sdk.m
 **[Open the separate mechanics learning section](mechanics-of-materials/README.md)** — no programming required.
 
 - **26 chapters:** a two-course sequence from statics, stress and strain through beams, torsion, combined loading, buckling, energy methods, fatigue and introductory FEA.
+- **[30-page formula book PDF](mechanics-of-materials/formula-book/Mechanics_of_Materials_Formula_Book.pdf)** — clearly typeset equations, symbols, assumptions and worked checks; [offline HTML](mechanics-of-materials/formula-book/Mechanics_of_Materials_Formula_Book.html).
 - **[Consolidated formula reference](mechanics-of-materials/formula-reference.md)** with assumptions and chapter links.
 - Plain-language explanations, worked calculations and practice questions with answers.
 - **[Attached textbook PDF: David Roylance, Modules in Mechanics of Materials](mechanics-of-materials/books/Roylance_Modules_in_Mechanics_of_Materials.pdf)** — 359 pages, MIT OpenCourseWare, CC BY-NC-SA 4.0. [Attribution and additional book](mechanics-of-materials/books/README.md).
